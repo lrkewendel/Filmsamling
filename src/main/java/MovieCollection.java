@@ -10,11 +10,12 @@ public class MovieCollection {
     // TODO US1
     public void addMovie(String title, String director, int yearCreated, boolean inColor,
                          int lengthInMinutes, String genre) {
-
+        addMovie("Psycho", "Alfred Hitchcock", 1960, true, 109, "Horror");
     }
 
     // TODO US3
     public ArrayList<Movie> getMovies() {
+
         return null;
     }
 
