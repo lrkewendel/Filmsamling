@@ -27,10 +27,8 @@ public class UserInterface {
         boolean running = true;
         welcome();
 
-        String choice = scanner.nextLine();
-
         while (running) {
-            choice = choice;
+            String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> createMovie();
@@ -72,12 +70,13 @@ public class UserInterface {
 
         if (movies.isEmpty()) {
             System.out.println("Du har ingen film i din samling :(");
+            return;
         }
 
         System.out.println("\nDIN FILMSAMLING");
 
         for (Movie movie : movies){
-            movie.printMovie(movie);
+            printMovie(movie);
         }
     }
 
@@ -95,6 +94,20 @@ public class UserInterface {
     private int readInt(String prompt) {
         System.out.print(prompt);
         return Integer.parseInt(scanner.nextLine().trim());
+    }
+    private void printMovie (Movie movie) {
+        String colorText;
+
+        if (movie.isInColor()) {
+            colorText = "farver";
+        }
+        else {
+            colorText = "sort-hvid";
+        }
+        System.out.println(movie.getTitle() + movie.getYearCreated());
+        System.out.println("Instruktør: " + movie.getDirector());
+        System.out.println("Genre: " + movie.getGenre());
+        System.out.println("Længde " + movie.getLengthInMinutes() + colorText);
     }
 }
 
