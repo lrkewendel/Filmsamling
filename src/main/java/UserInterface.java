@@ -99,7 +99,80 @@ public class UserInterface {
 
     private void editMovie() {
 
+        System.out.println("Hvilken film fra din samling skal ændres? ");
+
+        String searchText = scanner.nextLine();
+        ArrayList<Movie> matches = controller.searchMovies(searchText);
+
+        if(matches.isEmpty()){
+            System.out.println("Din søgning matchede ingen film i din samling.");
+        }
+
+        Movie movieToEdit = null;
+
+        if(matches.size() == 1){
+            movieToEdit = matches.get(0);
+        } else {
+            System.out.println("Flere film matchede din søgning. Vælg den film, som du vil ændre: ");
+
+            for (int i = 0; i < matches.size(); i++){
+                System.out.print("[" + (i + 1) + "] ");
+                printMovie(matches.get(i));
+            }
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if(choice > 0 && choice <= matches.size()){
+                movieToEdit = matches.get(choice - 1);
+            } else {
+                System.out.println("Ugyldigt valg. Redigeringen blev afbruft.");
+                return;
+            }
+        }
+        System.out.println(movieToEdit.getTitle() + " redigerers...");
+        System.out.println("Tryk 'Enter' for at beholde nuværende værdi");
+
+        System.out.println("Titel: " + movieToEdit.getTitle() + " - Ny titel: ");
+        String newTitel = scanner.nextLine();
+        if(!newTitel.trim().isEmpty()){
+            movieToEdit.setTitle(newTitel);
+        }
+
+        System.out.println("Instruktør: " + movieToEdit.getDirector() + " - Ny instruktør: ");
+        String newDirector = scanner.nextLine();
+        if(!newDirector.trim().isEmpty()){
+            movieToEdit.setDirector(newDirector);
+        }
+
+        System.out.println("Årstal: " + movieToEdit.getYearCreated() + " - Nyt årstal: ");
+        String yearInput = scanner.nextLine();
+        if(!yearInput.trim().isEmpty()){
+            movieToEdit.setYearCreated(Integer.parseInt(yearInput));
+        }
+
+        System.out.println("Farver: " + movieToEdit.isInColor() + " - Farve: ");
+        String newColor = scanner.nextLine();
+        if(!newColor.trim().isEmpty()){
+            movieToEdit.setInColor(Boolean.parseBoolean(newColor));
+        }
+
+        System.out.println("Længde: " + movieToEdit.getLengthInMinutes() + " - Ny tid: ");
+        String newTime = scanner.nextLine();
+        if(!newTime.trim().isEmpty()){
+            movieToEdit.setLengthInMinutes(Integer.parseInt(newTime));
+        }
+
+        System.out.println("Genre: " + movieToEdit.getGenre() + " - Ny genre: ");
+        String newGenre = scanner.nextLine();
+        if(!newGenre.trim().isEmpty()){
+            movieToEdit.setGenre(newGenre);
+        }
+
+        System.out.println("Filmen blev opdateret til: ");
+        printMovie(movieToEdit);
     }
+
 
     private void deleteMovie() {
 
