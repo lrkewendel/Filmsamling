@@ -176,6 +176,38 @@ public class UserInterface {
 
     private void deleteMovie() {
 
+        System.out.println("Søg efter den film, som du vil slette: ");
+
+        String searchText = scanner.nextLine();
+        ArrayList<Movie> matches = controller.searchMovies(searchText);
+
+        if(matches.isEmpty()){
+            System.out.println("Din søgning matchede ingen film i din samling.");
+            return;
+        }
+
+        System.out.println("Følgende film blev fundet: ");
+        for(int i = 0; i < matches.size(); i++){
+            System.out.println((i + 1) + "- " + matches.get(i).getTitle() + " (" + matches.get(i).getYearCreated() + ") ");
+        }
+
+        System.out.println("Vælg den film, som skal slettes: ");
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        if(choice < 1 || choice > matches.size()){
+            System.out.println("Ugyldigt valg. Sletningen blev afbrudt.");
+            return;
+        }
+
+        Movie movieDelete = matches.get(choice - 1);
+
+        boolean isDeleted = controller.deleteMovie(movieDelete);
+
+        if(isDeleted){
+            System.out.println("Filmen '" + movieDelete.getTitle() + "' er nu slettet.");
+        } else {
+            System.out.println("Der opstod en fejl under sletningen. Filmen kunne ikke slettes.");
+        }
     }
 
     private int readInt(String prompt) {
