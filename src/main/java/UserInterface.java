@@ -81,7 +81,21 @@ public class UserInterface {
     }
 
     private void searchMovies() {
+        System.out.print("Søg efter film: ");
+        String searchText = scanner.nextLine();
+        ArrayList<Movie> matches = controller.searchMovies(searchText);
+
+        if (matches.isEmpty()) {
+            System.out.println("Intet resultat");
+            return;
+        }
+        if (!matches.contains(searchText)) {
+            for (Movie match : matches) {
+                printMovie(match);
+            }
+        }
     }
+
 
     private void editMovie() {
 

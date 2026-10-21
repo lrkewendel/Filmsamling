@@ -19,7 +19,7 @@ public class MovieCollection {
         return movies;
     }
 
-    // TODO
+    // TODO US4
     public int getNumberOfMovies() {
         return movies.size();
     }
