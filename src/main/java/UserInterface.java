@@ -191,7 +191,7 @@ public class UserInterface {
             System.out.println((i + 1) + "- " + matches.get(i).getTitle() + " (" + matches.get(i).getYearCreated() + ") ");
         }
 
-        System.out.println("Vælg den film, som skal slettes: ");
+        System.out.println("Vælg nummeret på den film, som skal slettes: ");
         int choice = Integer.parseInt(scanner.nextLine());
 
         if(choice < 1 || choice > matches.size()){
@@ -200,6 +200,14 @@ public class UserInterface {
         }
 
         Movie movieDelete = matches.get(choice - 1);
+
+        System.out.println("Skal '" + movieDelete.getTitle() + "' slettes? (Ja eller Nej)");
+        String confirm = scanner.nextLine().trim().toLowerCase();
+
+        if(!confirm.equalsIgnoreCase("Ja")){
+            System.out.println("Sletningen blev afbrudt.");
+            return;
+        }
 
         boolean isDeleted = controller.deleteMovie(movieDelete);
 
