@@ -27,10 +27,8 @@ public class UserInterface {
         boolean running = true;
         welcome();
 
-        String choice = scanner.nextLine();
-
         while (running) {
-            choice = choice;
+            String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> createMovie();
@@ -61,10 +59,9 @@ public class UserInterface {
         System.out.print("Genre: ");
         String genre = scanner.nextLine();
 
-        controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, genre);
-
         System.out.print("\n" + title + " er tilføjet til samlingen.");
 
+        controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, genre);
     }
 
     private void showAllMovies() {
@@ -73,23 +70,17 @@ public class UserInterface {
 
         if (movies.isEmpty()) {
             System.out.println("Du har ingen film i din samling :(");
+            return;
         }
 
         System.out.println("\nDIN FILMSAMLING");
 
         for (Movie movie : movies){
-
+            printMovie(movie);
         }
     }
 
-    private String searchMovies() {
-        ArrayList<Movie> matches = controller.searchMovies(searchMovies());
-        String text = scanner.nextLine();
-
-        if (matches.contains(text));
-        System.out.println(controller.searchMovies(text));
-
-        return null;
+    private void searchMovies() {
         System.out.print("Søg efter film: ");
         String searchText = scanner.nextLine();
         ArrayList<Movie> matches = controller.searchMovies(searchText);
@@ -210,7 +201,7 @@ public class UserInterface {
 
         Movie movieDelete = matches.get(choice - 1);
 
-        System.out.println("Skal '" + movieDelete.getTitle() + "' slettes? (Ja eller Nej)");
+        System.out.println("Skal '" + movieDelete.getTitle() + " slettes? (Ja eller Nej)");
         String confirm = scanner.nextLine().trim().toLowerCase();
 
         if(!confirm.equalsIgnoreCase("Ja")){
@@ -230,6 +221,20 @@ public class UserInterface {
     private int readInt(String prompt) {
         System.out.print(prompt);
         return Integer.parseInt(scanner.nextLine().trim());
+    }
+    private void printMovie (Movie movie) {
+        String colorText;
+
+        if (movie.isInColor()) {
+            colorText = "farver";
+        }
+        else {
+            colorText = "sort-hvid";
+        }
+        System.out.println(movie.getTitle() + movie.getYearCreated());
+        System.out.println("Instruktør: " + movie.getDirector());
+        System.out.println("Genre: " + movie.getGenre());
+        System.out.println("Længde " + movie.getLengthInMinutes() + colorText);
     }
 }
 
