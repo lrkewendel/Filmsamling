@@ -27,8 +27,10 @@ public class UserInterface {
         boolean running = true;
         welcome();
 
+        String choice = scanner.nextLine();
+
         while (running) {
-            String choice = scanner.nextLine();
+            choice = choice;
 
             switch (choice) {
                 case "1" -> createMovie();
@@ -59,9 +61,10 @@ public class UserInterface {
         System.out.print("Genre: ");
         String genre = scanner.nextLine();
 
+        controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, genre);
+
         System.out.print("\n" + title + " er tilføjet til samlingen.");
 
-        controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, genre);
     }
 
     private void showAllMovies() {
@@ -70,17 +73,23 @@ public class UserInterface {
 
         if (movies.isEmpty()) {
             System.out.println("Du har ingen film i din samling :(");
-            return;
         }
 
         System.out.println("\nDIN FILMSAMLING");
 
         for (Movie movie : movies){
-            printMovie(movie);
+
         }
     }
 
-    private void searchMovies() {
+    private String searchMovies() {
+        ArrayList<Movie> matches = controller.searchMovies(searchMovies());
+        String text = scanner.nextLine();
+
+        if (matches.contains(text));
+        System.out.println(controller.searchMovies(text));
+
+        return null;
         System.out.print("Søg efter film: ");
         String searchText = scanner.nextLine();
         ArrayList<Movie> matches = controller.searchMovies(searchText);
@@ -221,20 +230,6 @@ public class UserInterface {
     private int readInt(String prompt) {
         System.out.print(prompt);
         return Integer.parseInt(scanner.nextLine().trim());
-    }
-    private void printMovie (Movie movie) {
-        String colorText;
-
-        if (movie.isInColor()) {
-            colorText = "farver";
-        }
-        else {
-            colorText = "sort-hvid";
-        }
-        System.out.println(movie.getTitle() + movie.getYearCreated());
-        System.out.println("Instruktør: " + movie.getDirector());
-        System.out.println("Genre: " + movie.getGenre());
-        System.out.println("Længde " + movie.getLengthInMinutes() + colorText);
     }
 }
 
