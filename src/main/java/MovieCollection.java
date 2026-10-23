@@ -21,7 +21,6 @@ public class MovieCollection {
         return movies.size();
     }
 
-    // Finder alle film, hvor søgeteksten indgår i titlen – uanset store og små bogstaver
     public ArrayList<Movie> searchMovies(String searchText) {
         ArrayList<Movie> matches = new ArrayList<>();
         String text = searchText.toLowerCase();
