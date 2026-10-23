@@ -237,6 +237,3 @@ public class UserInterface {
         System.out.println("Længde " + movie.getLengthInMinutes() + colorText);
     }
 }
-
-
-
