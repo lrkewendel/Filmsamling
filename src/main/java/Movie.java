@@ -24,6 +24,8 @@ public class Movie {
 
     }
 
+
+
     public boolean isInColor() {
         return inColor;
     }

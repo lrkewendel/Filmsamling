@@ -24,6 +24,7 @@ public class UserInterface {
 
     private void welcome() {
         System.out.println("VELKOMMEN TIL DIN FILMSAMLING\n");
+        System.out.println("");
 
     }
 
@@ -73,6 +74,10 @@ public class UserInterface {
         welcome();
         menu();
 
+        // TEST FILM:
+        controller.addMovie("Barbie", "Greta Gerwig", 2023, true, 114, "Fantasy");
+        controller.addMovie("Cars", "John Lasseter", 2006, true, 116, "Komedie");
+
         while (running) {
             System.out.print("\nSkriv et tal fra menuen for at vælge, hvad du vil: ");
             String choice = scanner.nextLine();
@@ -88,7 +93,7 @@ public class UserInterface {
                 case "8" -> deleteMovie();
                 case "0" -> running = false;
                 default ->
-                        System.out.print("\nHovsa! '" + ITALIC + choice + RESET + "' findes ikke på menuen :( \n\nPrøv igen... ");
+                        System.out.print("\nHovsa! \"" + ITALIC + choice + RESET + "\" findes ikke på menuen :( \n\nPrøv igen... ");
             }
         }
     }
@@ -105,12 +110,44 @@ public class UserInterface {
         System.out.print("Instruktør: ");
         String director = scanner.nextLine();
 
-        int yearCreated = readInt("Årstal: ");
+        Integer yearCreated;
 
-        System.out.print("I farver (ja/nej): ");
-        boolean inColor = scanner.nextLine().trim().equalsIgnoreCase("ja");
+        do {
+            yearCreated = readInt("Årstal: ");
 
-        int lengthInMinutes = readInt("Længde i minutter: ");
+            if (yearCreated == null) {
+                System.out.println("Hovsa! Du skal skriv et tal f.eks \"2026\"");
+            }
+
+        } while (yearCreated == null);
+
+
+        String answer;
+
+        do {
+            System.out.print("I farver (ja/nej): ");
+            answer = scanner.nextLine().trim();
+
+            if (!answer.equalsIgnoreCase("ja") && !answer.equalsIgnoreCase("nej")) {
+                System.out.println("Hovsa! Skriv venligst \"ja\" eller \"nej\".\n");
+            }
+
+        } while (!answer.equalsIgnoreCase("ja") && !answer.equalsIgnoreCase("nej"));
+
+        boolean inColor = answer.equalsIgnoreCase("ja");
+
+
+        Integer lengthInMinutes;
+
+        do {
+            ´ = readInt("Længde i minutter: ");
+
+            if (lengthInMinutes == null) {
+                System.out.println("Hovsa! Du skal skriv et tal f.eks \"120\"");
+            }
+
+        } while (lengthInMinutes == null);
+
 
         System.out.print("Genre: ");
         String genre = scanner.nextLine();
@@ -136,7 +173,7 @@ public class UserInterface {
         ArrayList<Movie> matches = controller.searchMovies(searchText);
 
         if (matches.isEmpty()) {
-            System.out.println("\nHovsa! Det ligner ikke at '" + ITALIC + searchText + RESET + "' findes i din samling :(");
+            System.out.println("\nHovsa! Det ligner ikke at \"" + ITALIC + searchText + RESET + "\" findes i din samling :(");
             System.out.println(GRAY + "⎯".repeat(35) + RESET);
             return;
 
@@ -146,7 +183,7 @@ public class UserInterface {
 
         for (int i = 0; i < matches.size(); i++) {
             Movie movie = matches.get(i);
-            System.out.print((i + 1) + ". " + capitalizeFirstLetter(movie.getTitle()) + " (" + ITALIC + movie.getYearCreated() + RESET +")\n");
+            System.out.print((i + 1) + ". " + capitalizeFirstLetter(movie.getTitle()) + " (" + ITALIC + movie.getYearCreated() + RESET + ")\n");
         }
 
         int choice = readInt("\nSkriv nummeret fra listen på den film du har set: ");
@@ -262,7 +299,7 @@ public class UserInterface {
             }
         }
         System.out.println(movieToEdit.getTitle() + " redigerers...");
-        System.out.println("Tryk 'Enter' for at beholde nuværende værdi");
+        System.out.println("Tryk \"Enter\" for at beholde nuværende værdi");
 
         System.out.println("Titel: " + movieToEdit.getTitle() + " - Ny titel: ");
         String newTitel = scanner.nextLine();
@@ -336,7 +373,7 @@ public class UserInterface {
 
         Movie movieDelete = matches.get(choice - 1);
 
-        System.out.println("Skal '" + movieDelete.getTitle() + " slettes? (Ja eller Nej)");
+        System.out.println("Skal \"" + movieDelete.getTitle() + "\" slettes? (Ja eller Nej)");
         String confirm = scanner.nextLine().trim().toLowerCase();
 
         if (!confirm.equalsIgnoreCase("Ja")) {
@@ -347,7 +384,7 @@ public class UserInterface {
         boolean isDeleted = controller.deleteMovie(movieDelete);
 
         if (isDeleted) {
-            System.out.println("Filmen '" + movieDelete.getTitle() + "' er nu slettet.");
+            System.out.println("Filmen \"" + movieDelete.getTitle() + "\" er nu slettet.");
         } else {
             System.out.println("Der opstod en fejl under sletningen. Filmen kunne ikke slettes.");
         }
@@ -404,8 +441,13 @@ public class UserInterface {
     }
 
     // KONVERTERER TIL HELTAL:
-    private int readInt(String prompt) {
-        System.out.print(prompt);
-        return Integer.parseInt(scanner.nextLine().trim());
+    private Integer readInt(String prompt) {
+
+        try {
+            System.out.print(prompt);
+            return Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }
