@@ -150,14 +150,29 @@ public class UserInterface {
 
 
         System.out.print("Genre: ");
-        String genre = scanner.nextLine();
+        for (Genre type : Genre.values()){
+            System.out.println("- " + type);
+        }
+
+        Genre chosenGenre = null;
+
+        while(chosenGenre == null){
+            System.out.println("Skriv en genre fra listen: ");
+            String genre = scanner.nextLine().trim().toUpperCase();
+
+            try{
+                chosenGenre = Genre.valueOf(genre);
+            } catch (IllegalArgumentException e){
+                System.out.println(genre + " er ikke en gyldig genre. Vælg venligst en genre fra listen.");
+            }
+        }
 
         String capitalizedTitle = capitalizeFirstLetter(title);
 
         System.out.print(ITALIC + "\n" + capitalizedTitle + " blev tilføjet til din filmsamling!\n" + RESET);
         System.out.println(GRAY + "⎯".repeat(35) + RESET);
 
-        controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, genre);
+        controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, String.valueOf(chosenGenre));
     }
 
 
