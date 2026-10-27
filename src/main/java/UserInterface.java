@@ -140,7 +140,7 @@ public class UserInterface {
         Integer lengthInMinutes;
 
         do {
-            ´ = readInt("Længde i minutter: ");
+            lengthInMinutes = readInt("Længde i minutter: ");
 
             if (lengthInMinutes == null) {
                 System.out.println("Hovsa! Du skal skriv et tal f.eks \"120\"");
