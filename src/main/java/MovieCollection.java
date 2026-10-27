@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class MovieCollection {
@@ -8,6 +9,7 @@ public class MovieCollection {
     }
 
     public void addMovie(String title, String director, int yearCreated, boolean inColor, int lengthInMinutes, String genre) {
+
         Movie movie = new Movie(title, director, yearCreated, inColor, lengthInMinutes, genre);
         movies.add(movie);
     }
@@ -50,4 +52,18 @@ public class MovieCollection {
     public boolean deleteMovie(Movie movie) {
         return movies.remove(movie);
     }
+
+    public ArrayList<Movie> getMoviesNotWatchedSince(LocalDate date) {
+        ArrayList<Movie> result = new ArrayList<>();
+
+        for (Movie movie : movies) {
+            if (!movie.hasBeenWatched()
+                    || movie.getLastWatched().isBefore(date)) {
+                result.add(movie);
+            }
+        }
+
+        return result;
+    }
+
 }
