@@ -151,19 +151,24 @@ public class UserInterface {
 
         System.out.print("Genre: ");
         for (Genre type : Genre.values()){
-            System.out.println("- " + type);
+            System.out.println("- " + type.getDanishName());
         }
 
         Genre chosenGenre = null;
 
-        while(chosenGenre == null){
+        while (chosenGenre == null) {
             System.out.println("Skriv en genre fra listen: ");
-            String genre = scanner.nextLine().trim().toUpperCase();
+            String genreInput = scanner.nextLine().trim();
 
-            try{
-                chosenGenre = Genre.valueOf(genre);
-            } catch (IllegalArgumentException e){
-                System.out.println(genre + " er ikke en gyldig genre. Vælg venligst en genre fra listen.");
+            for (Genre type : Genre.values()) {
+                if (type.getDanishName().equalsIgnoreCase(genreInput)) {
+                    chosenGenre = type;
+                    break;
+                }
+            }
+
+            if (chosenGenre == null) {
+                System.out.println("\"" + genreInput + "\" er ikke en gyldig genre. Vælg venligst en genre fra listen.");
             }
         }
 
