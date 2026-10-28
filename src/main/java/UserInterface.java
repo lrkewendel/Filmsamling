@@ -27,14 +27,20 @@ public class UserInterface {
     final String BLACK_BG = "\u001B[40m";
 
     private void welcome() {
-        System.out.println("VELKOMMEN TIL DIN FILMSAMLING\n");
-        System.out.println("");
+        System.out.println("VELKOMMEN TIL \n");
+        System.out.print("""
+                ██████  ██ ███    ██     ███████ ██ ██      ███    ███ ███████  █████  ███    ███ ██      ██ ███    ██  ██████ \s
+                ██   ██ ██ ████   ██     ██      ██ ██      ████  ████ ██      ██   ██ ████  ████ ██      ██ ████   ██ ██      \s
+                ██   ██ ██ ██ ██  ██     █████   ██ ██      ██ ████ ██ ███████ ███████ ██ ████ ██ ██      ██ ██ ██  ██ ██   ███ 
+                ██   ██ ██ ██  ██ ██     ██      ██ ██      ██  ██  ██      ██ ██   ██ ██  ██  ██ ██      ██ ██  ██ ██ ██    ██ 
+                ██████  ██ ██   ████     ██      ██ ███████ ██      ██ ███████ ██   ██ ██      ██ ███████ ██ ██   ████  ██████  
+                                                                                                                               \s
+                """);
 
     }
 
     private void menu() {
-
-        System.out.println("\n");
+        System.out.print("");
         System.out.println(BLACK_BG + " ■".repeat(97) + " " + RESET);
 
         System.out.print(BLACK_BG + BLACK + "⎟" + RESET + " ".repeat(20));
