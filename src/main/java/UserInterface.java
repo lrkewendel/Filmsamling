@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class UserInterface {
 
@@ -30,6 +33,7 @@ public class UserInterface {
 
     private void menu() {
 
+        System.out.println("\n");
         System.out.println(BLACK_BG + " ■".repeat(97) + " " + RESET);
 
         System.out.print(BLACK_BG + BLACK + "⎟" + RESET + " ".repeat(20));
@@ -72,13 +76,14 @@ public class UserInterface {
     public void startProgram() {
         boolean running = true;
         welcome();
-        menu();
 
         // TEST FILM:
         controller.addMovie("Barbie", "Greta Gerwig", 2023, true, 114, "Fantasy");
         controller.addMovie("Cars", "John Lasseter", 2006, true, 116, "Komedie");
 
         while (running) {
+
+            menu();
             System.out.print("\nSkriv et tal fra menuen for at vælge, hvad du vil: ");
             String choice = scanner.nextLine();
 
@@ -107,34 +112,60 @@ public class UserInterface {
         System.out.print("Title: ");
         String title = scanner.nextLine();
 
+        do {
+            if (title.isEmpty()) {
+                System.out.print("Skriv venligst en title: ");
+                title = scanner.nextLine();
+            }
+
+        } while (title.isEmpty());
+
         System.out.print("Instruktør: ");
         String director = scanner.nextLine();
 
+        do {
+            if (director.isEmpty()) {
+                System.out.print("Skriv venligst en instruktør: ");
+                director = scanner.nextLine();
+            }
+
+        } while (director.isEmpty());
+
         Integer yearCreated;
+
+        LocalDate today = LocalDate.now();
+        LocalDate nextYear = today.plusYears(1);
+
 
         do {
             yearCreated = readInt("Årstal: ");
 
             if (yearCreated == null) {
                 System.out.println("Hovsa! Du skal skriv et tal f.eks \"2026\"");
+            } else if (yearCreated < 1888) {
+                System.out.println("Der er igen film lavet før 1888");
+                yearCreated = null;
+            } else if ((yearCreated) > nextYear.getYear()) {
+                System.out.println("Du kan ikke tilføje film efter " + nextYear.getYear());
+                yearCreated = null;
             }
 
         } while (yearCreated == null);
 
 
-        String answer;
+        String colorInput;
 
         do {
             System.out.print("I farver (ja/nej): ");
-            answer = scanner.nextLine().trim();
+            colorInput = scanner.nextLine().trim();
 
-            if (!answer.equalsIgnoreCase("ja") && !answer.equalsIgnoreCase("nej")) {
+            if (!colorInput.equalsIgnoreCase("ja") && !colorInput.equalsIgnoreCase("nej")) {
                 System.out.println("Hovsa! Skriv venligst \"ja\" eller \"nej\".\n");
             }
 
-        } while (!answer.equalsIgnoreCase("ja") && !answer.equalsIgnoreCase("nej"));
+        } while (!colorInput.equalsIgnoreCase("ja") && !colorInput.equalsIgnoreCase("nej"));
 
-        boolean inColor = answer.equalsIgnoreCase("ja");
+        boolean inColor = colorInput.equalsIgnoreCase("ja");
 
 
         Integer lengthInMinutes;
@@ -144,13 +175,15 @@ public class UserInterface {
 
             if (lengthInMinutes == null) {
                 System.out.println("Hovsa! Du skal skriv et tal f.eks \"120\"");
+            } else if (lengthInMinutes < 1) {
+                System.out.println("Filmen skal være mindst et minut lang");
+                lengthInMinutes = null;
             }
 
         } while (lengthInMinutes == null);
 
-
         System.out.print("Genre: ");
-        for (Genre type : Genre.values()){
+        for (Genre type : Genre.values()) {
             System.out.println("- " + type.getDanishName());
         }
 
@@ -168,6 +201,12 @@ public class UserInterface {
             }
 
             if (chosenGenre == null) {
+                do {
+                    System.out.print("Skriv en genre fra listen: ");
+                    genreInput = scanner.nextLine();
+
+                } while (genreInput.isEmpty());
+            } else {
                 System.out.println("\"" + genreInput + "\" er ikke en gyldig genre. Vælg venligst en genre fra listen.");
             }
         }
@@ -196,7 +235,6 @@ public class UserInterface {
             System.out.println("\nHovsa! Det ligner ikke at \"" + ITALIC + searchText + RESET + "\" findes i din samling :(");
             System.out.println(GRAY + "⎯".repeat(35) + RESET);
             return;
-
         }
 
         System.out.println("\nFilm der matcher din søgning:");
@@ -208,21 +246,36 @@ public class UserInterface {
 
         int choice = readInt("\nSkriv nummeret fra listen på den film du har set: ");
 
-
         if (choice < 1 || choice > matches.size()) {
             System.out.println("\nHovsa! Det tal var ikke på listen :(");
             System.out.println(GRAY + "⎯".repeat(35) + RESET);
             return;
         }
-
         Movie selectedMovie = matches.get(choice - 1);
 
-        controller.markAsWatched(selectedMovie);
+        System.out.print("Hvornår så du filmen? (dd-mm-åååå): ");
+        String dateInput = scanner.nextLine();
 
-        System.out.println(ITALIC + "\n" + selectedMovie.getTitle() + " er markeret som set i dag!" + RESET);
-        System.out.println(GRAY + "⎯".repeat(35) + RESET);
+        String regex = "(\\d{2})-(\\d{2})-(\\d{4})";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(dateInput);
+
+        if (matcher.find()) {
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate watchedDate = LocalDate.parse(matcher.group(0), formatter);
+            selectedMovie.markAsWatched(watchedDate);
+
+            System.out.println(ITALIC + "\n" + selectedMovie.getTitle() + " er markeret som set " + RESET + watchedDate.format(formatter));
+            System.out.println(GRAY + "⎯".repeat(35) + RESET);
+        } else {
+            controller.markAsWatched(selectedMovie);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            System.out.println(ITALIC + "\n" + selectedMovie.getTitle() + " er markeret som set i dag (" + LocalDate.now().format(formatter) + ")" + RESET);
+            System.out.println(GRAY + "⎯".repeat(35) + RESET);
+        }
     }
-
 
     // 3. VIS ALLE FILM:
     private void showAllMovies() {
@@ -353,7 +406,7 @@ public class UserInterface {
 
         System.out.println("Genre: " + movieToEdit.getGenre() + " - Ny genre: ");
 
-        for (Genre type : Genre.values()){
+        for (Genre type : Genre.values()) {
             System.out.println("- " + type.getDanishName());
         }
 
