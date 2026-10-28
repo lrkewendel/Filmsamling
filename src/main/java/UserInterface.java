@@ -441,7 +441,18 @@ public class UserInterface {
 
         String capitalizedTitle = capitalizeFirstLetter(movie.getTitle());
         String capitalizedDirector = capitalizeFirstLetter(movie.getDirector());
-        String capitalizeGenre = capitalizeFirstLetter(movie.getGenre());
+
+        String danskNavn = movie.getGenre(); // Fallback hvis den ikke findes i enummets liste
+
+        for (Genre type : Genre.values()) {
+            // Tjekker om den gemte tekst matcher enten Enum-navnet (fx "ACTION") eller det danske navn
+            if (type.name().equalsIgnoreCase(movie.getGenre()) || type.getDanishName().equalsIgnoreCase(movie.getGenre())) {
+                danskNavn = type.getDanishName();
+                break;
+            }
+        }
+
+        String capitalizeGenre = capitalizeFirstLetter(danskNavn);
 
         System.out.println("\n" + BOLD + capitalizedTitle + RESET + " (" + ITALIC + movie.getYearCreated() + RESET + ")\n");
 
