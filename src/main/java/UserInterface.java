@@ -1,4 +1,5 @@
 import java.sql.SQLOutput;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
@@ -136,7 +137,6 @@ public class UserInterface {
         LocalDate today = LocalDate.now();
         LocalDate nextYear = today.plusYears(1);
 
-
         do {
             yearCreated = readInt("Årstal: ");
 
@@ -253,28 +253,51 @@ public class UserInterface {
         }
         Movie selectedMovie = matches.get(choice - 1);
 
-        System.out.print("Hvornår så du filmen? (dd-mm-åååå): ");
-        String dateInput = scanner.nextLine();
+        boolean validDate;
 
-        String regex = "(\\d{2})-(\\d{2})-(\\d{4})";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate watchedDate = null;
 
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(dateInput);
+        do {
+            validDate = true;
 
-        if (matcher.find()) {
+            System.out.print("Hvornår så du filmen? (dd-MM-yyyy): ");
+            String dateInput = scanner.nextLine();
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate watchedDate = LocalDate.parse(matcher.group(0), formatter);
-            selectedMovie.markAsWatched(watchedDate);
+            String regex = "\\d{2}-\\d{2}-\\d{4}";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(dateInput);
 
-            System.out.println(ITALIC + "\n" + selectedMovie.getTitle() + " er markeret som set " + RESET + watchedDate.format(formatter));
-            System.out.println(GRAY + "⎯".repeat(35) + RESET);
-        } else {
-            controller.markAsWatched(selectedMovie);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            System.out.println(ITALIC + "\n" + selectedMovie.getTitle() + " er markeret som set i dag (" + LocalDate.now().format(formatter) + ")" + RESET);
-            System.out.println(GRAY + "⎯".repeat(35) + RESET);
-        }
+            if (matcher.matches()) {
+                try {
+                    watchedDate = LocalDate.parse(dateInput, formatter);
+
+                    if (watchedDate.getYear() < selectedMovie.getYearCreated()) {
+                        System.out.println("Hovsa! Du kan ikke have set filmen, før den blev udgivet.");
+                        validDate = false;
+
+                    } else if (watchedDate.isAfter(LocalDate.now())) {
+                        System.out.println("Hovsa! Du kan ikke have set en film i fremtiden.");
+                        validDate = false;
+                    }
+
+                } catch (DateTimeParseException e) {
+                    System.out.println("Hovsa! Den dato findes vist ikke. Prøv igen, f.eks. 28-10-2026.");
+                    validDate = false;
+                }
+
+            } else {
+                System.out.println("Hovsa! Brug formatet dd-MM-yyyy, f.eks. 28-10-2026.");
+                validDate = false;
+            }
+
+        } while (!validDate);
+
+        selectedMovie.markAsWatched(watchedDate);
+
+        System.out.println(ITALIC + "\n" + selectedMovie.getTitle()
+                + " er markeret som set " + RESET + watchedDate.format(formatter));
+        System.out.println(GRAY + "⎯".repeat(35) + RESET);
     }
 
     // 3. VIS ALLE FILM:

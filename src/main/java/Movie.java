@@ -12,9 +12,7 @@ public class Movie {
     private String genre;
     private LocalDate lastWatched;
 
-
-    public Movie(String title, String director, int yearCreated, boolean inColor,
-                 int lengthInMinutes, String genre) {
+    public Movie(String title, String director, int yearCreated, boolean inColor, int lengthInMinutes, String genre) {
         this.title = title;
         this.director = director;
         this.yearCreated = yearCreated;
@@ -23,8 +21,6 @@ public class Movie {
         this.genre = genre;
 
     }
-
-
 
     public boolean isInColor() {
         return inColor;
@@ -74,13 +70,21 @@ public class Movie {
         this.genre = genre;
     }
 
-    public LocalDate getLastWatched() { return lastWatched; }
+    public LocalDate getLastWatched() {
+        return lastWatched;
+    }
 
-    public boolean hasBeenWatched() { return lastWatched != null; }
+    public boolean hasBeenWatched() {
+        return lastWatched != null;
+    }
 
-    public void markAsWatched(LocalDate date) { lastWatched = date; }
+    public void markAsWatched(LocalDate date) {
+        lastWatched = date;
+    }
 
-    public long getDaysSinceWatched(LocalDate today) { return ChronoUnit.DAYS.between(lastWatched, today); }
+    public long getDaysSinceWatched(LocalDate today) {
+        return ChronoUnit.DAYS.between(lastWatched, today);
+    }
 
 }
 
