@@ -352,10 +352,29 @@ public class UserInterface {
         }
 
         System.out.println("Genre: " + movieToEdit.getGenre() + " - Ny genre: ");
-        String newGenre = scanner.nextLine();
-        if (!newGenre.trim().isEmpty()) {
-            movieToEdit.setGenre(newGenre);
+
+        for (Genre type : Genre.values()){
+            System.out.println("- " + type.getDanishName());
         }
+
+        Genre chosenGenre = null;
+
+        while (chosenGenre == null) {
+            System.out.println("Skriv en genre fra listen: ");
+            String genreInput = scanner.nextLine().trim();
+
+            for (Genre type : Genre.values()) {
+                if (type.getDanishName().equalsIgnoreCase(genreInput)) {
+                    chosenGenre = type;
+                    break;
+                }
+            }
+
+            if (chosenGenre == null) {
+                System.out.println("\"" + genreInput + "\" er ikke en gyldig genre. Vælg venligst en genre fra listen.");
+            }
+        }
+        movieToEdit.setGenre(String.valueOf(chosenGenre));
 
         System.out.println("Filmen blev opdateret til: ");
         printMovie(movieToEdit);
