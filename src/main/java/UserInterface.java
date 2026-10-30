@@ -149,7 +149,7 @@ public class UserInterface {
             if (yearCreated == null) {
                 System.out.println("Hovsa! Du skal skriv et tal f.eks \"2026\"");
             } else if (yearCreated < 1888) {
-                System.out.println("Der er igen film lavet før 1888");
+                System.out.println("Der er ingen film lavet før 1888");
                 yearCreated = null;
             } else if ((yearCreated) > nextYear.getYear()) {
                 System.out.println("Du kan ikke tilføje film efter " + nextYear.getYear());
