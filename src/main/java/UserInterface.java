@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.sql.SQLOutput;
 import java.time.Year;
 import java.time.format.DateTimeParseException;
@@ -86,9 +87,11 @@ public class UserInterface {
         boolean running = true;
         welcome();
 
-        // TEST FILM:
-        controller.addMovie("Barbie", "Greta Gerwig", 2023, true, 114, "Fantasy");
-        controller.addMovie("Cars", "John Lasseter", 2006, true, 116, "Komedie");
+        try {
+            controller.loadMovies();
+        } catch (FileNotFoundException e){
+            System.out.println("Der er ingen gemte film i din Filmsamling.");
+        }
 
         while (running) {
 
@@ -110,6 +113,14 @@ public class UserInterface {
 
             }
         }
+
+        try {
+            controller.saveMovies();
+            System.out.println("Din filmsamling er blevet gemt");
+        } catch (FileNotFoundException e){
+            System.out.println("Hovsa! Din filmsamling kunne ikke gemmes.");
+        }
+
         scanner.close();
     }
 

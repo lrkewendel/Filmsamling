@@ -14,7 +14,10 @@ public class MovieCollection {
 
         Movie movie = new Movie(title, director, yearCreated, inColor, lengthInMinutes, genre);
         movies.add(movie);
+    }
 
+    public void addMovie(Movie movie){
+        movies.add(movie);
     }
 
 

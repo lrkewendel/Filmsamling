@@ -44,7 +44,7 @@ public class FileHandler {
             String genre = fields[5];
             LocalDate lastWatched = null;
 
-            if(!fields[6].isEmpty()){
+            if(!fields[6].isEmpty() && !fields[6].equals("null")){
                 lastWatched = LocalDate.parse(fields[6]);
             }
 
