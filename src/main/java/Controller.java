@@ -12,6 +12,8 @@ public class Controller {
         this.movieCollection = new MovieCollection();
     }
 
+    FileHandler fileHandler = new FileHandler("movies.csv");
+
     public void addMovie(String title, String director, int yearCreated, boolean inColor,
                          int lengthInMinutes, String genre) {
         movieCollection.addMovie(title, director, yearCreated, inColor, lengthInMinutes, genre);

@@ -86,6 +86,15 @@ public class Movie {
         return ChronoUnit.DAYS.between(lastWatched, today);
     }
 
+    public String toCsvLine(){
+        return    getTitle() + ";"
+                + getDirector() + ";"
+                + getYearCreated() + ";"
+                + isInColor() + ";"
+                + getLengthInMinutes() + ";"
+                + getGenre() + ";"
+                + lastWatched;
+    }
 }
 
 
