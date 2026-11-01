@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,13 +15,12 @@ public class FileHandler {
     }
 
     public void saveMovies (ArrayList<Movie>movies)
-        throws FileNotFoundException{
-        PrintStream output = new PrintStream(new File(fileName));
+        throws FileNotFoundException, java.io.UnsupportedEncodingException{
+        PrintStream output = new PrintStream(new File(fileName), "UTF-8");
 
         for(Movie movie : movies){
             output.println(movie.toCsvLine());
         }
-
         output.close();
     }
 
@@ -29,7 +29,7 @@ public class FileHandler {
 
         ArrayList<Movie> movies = new ArrayList<>();
 
-        Scanner fileScanner = new Scanner(new File(fileName));
+        Scanner fileScanner = new Scanner(new File(fileName), "UTF-8");
 
         while (fileScanner.hasNextLine()){
             String line = fileScanner.nextLine();
@@ -53,14 +53,10 @@ public class FileHandler {
             if(lastWatched != null){
                 movie.markAsWatched(lastWatched);
             }
-
             movies.add(movie);
         }
-
         fileScanner.close();
 
         return movies;
     }
-
-
 }

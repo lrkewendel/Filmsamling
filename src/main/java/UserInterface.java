@@ -1,4 +1,6 @@
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLOutput;
 import java.time.Year;
 import java.time.format.DateTimeParseException;
@@ -16,7 +18,7 @@ public class UserInterface {
     private Controller controller;
 
     public UserInterface() {
-        this.scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         this.controller = new Controller();
     }
 
@@ -119,6 +121,8 @@ public class UserInterface {
             System.out.println("Din filmsamling er blevet gemt");
         } catch (FileNotFoundException e){
             System.out.println("Hovsa! Din filmsamling kunne ikke gemmes.");
+        } catch (java.io.UnsupportedEncodingException e) {
+            System.out.println("Hovsa! Din PC understøtter ikke UTF-8 formatering.");
         }
 
         scanner.close();
@@ -234,7 +238,6 @@ public class UserInterface {
         controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, String.valueOf(chosenGenre));
     }
 
-
     // 2. MARKÉR SOM SET:
     private void markAsSeen() {
 
@@ -338,7 +341,25 @@ public class UserInterface {
 
         System.out.println(BOLD + "\n\n" + " ".repeat(16) + "⭑ SOTÈR DIN FILMSAMLING ⭑" + RESET);
         System.out.println(GRAY + "━".repeat(58) + "\n" + RESET);
+        System.out.println("Du kan vælge at sortere efter: Titel, Instruktør, Årstal, Farver, Længde eller Genre.");
 
+        String sortMovieInput = scanner.nextLine().toLowerCase();
+        String sortingChoice = "";
+
+        Pattern pattern = Pattern.compile("(titel|instruktør|årstal|farver|længde|genre)");
+        Matcher matcher = pattern.matcher(sortMovieInput);
+
+        if (matcher.find()) {
+            sortingChoice = matcher.group(1);
+        }
+
+        if (!sortingChoice.isEmpty()) {
+            controller.sortMovies(sortingChoice);
+            System.out.println("\n Filmsamlingen er sorteret efter " + sortingChoice + "\n");
+            showAllMovies();
+        } else {
+            System.out.println("\n Kunne ikke sortere din filmsamling.");
+        }
     }
 
     // 5. SØG EFTER FILM:
@@ -367,8 +388,6 @@ public class UserInterface {
 
         System.out.println(BOLD + "\n\n" + " ".repeat(14) + "⭑ FILM DU IKKE HAR SET LÆNGE ⭑" + RESET);
         System.out.println(GRAY + "━".repeat(58) + "\n" + RESET);
-
-
     }
 
     // 7. REDIGÈR FILM:
@@ -376,7 +395,6 @@ public class UserInterface {
 
         System.out.println(BOLD + "\n\n" + " ".repeat(11) + "⭑ REDIGÈR EN FILM FRA DIN SAMLING ⭑" + RESET);
         System.out.println(GRAY + "━".repeat(58) + "\n" + RESET);
-
 
         System.out.println("Hvilken film fra din samling skal ændres? ");
 
@@ -554,7 +572,6 @@ public class UserInterface {
         System.out.println(ITALIC + "Filmen er i " + colorText + RESET);
         System.out.println();
 
-
         if (movie.hasBeenWatched()) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -568,12 +585,10 @@ public class UserInterface {
             System.out.println("Du har aldrig set " + capitalizedTitle);
 
         }
-
         System.out.println(GRAY + "⎯".repeat(35) + RESET);
-
     }
 
-    // STORT FORBOKSTAV:
+    // STORT FORBOGSTAV:
     private String capitalizeFirstLetter(String input) {
         if (input == null || input.isEmpty()) {
             return input;
@@ -591,5 +606,4 @@ public class UserInterface {
             return null;
         }
     }
-
 }

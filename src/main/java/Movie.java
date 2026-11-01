@@ -19,7 +19,6 @@ public class Movie {
         this.inColor = inColor;
         this.lengthInMinutes = lengthInMinutes;
         this.genre = genre;
-
     }
 
     public boolean isInColor() {
@@ -62,9 +61,7 @@ public class Movie {
         this.lengthInMinutes = lengthInMinutes;
     }
 
-    public String getGenre() {
-        return genre;
-    }
+    public String getGenre() {return genre;}
 
     public void setGenre(String genre) {
         this.genre = genre;
@@ -96,6 +93,3 @@ public class Movie {
                 + lastWatched;
     }
 }
-
-
-

@@ -38,16 +38,14 @@ public class Controller {
         return movieCollection.deleteMovie(movie);
     }
 
-    public void markAsWatched(Movie movie) {
-        movie.markAsWatched(LocalDate.now());
-    }
+    public void markAsWatched(Movie movie) {}
 
     public ArrayList<Movie> getMoviesNotWatchedForDays(int days) {
         LocalDate limit = LocalDate.now().minusDays(days);
         return movieCollection.getMoviesNotWatchedSince(limit);
     }
 
-    public void saveMovies() throws FileNotFoundException{
+    public void saveMovies() throws FileNotFoundException, java.io.UnsupportedEncodingException{
         fileHandler.saveMovies(movieCollection.getMovies());
     }
 
@@ -57,5 +55,9 @@ public class Controller {
        for(Movie movie : movies){
            movieCollection.addMovie(movie);
        }
+    }
+
+    public void sortMovies(String sortingChoice) {
+        this.movieCollection.sortMovies(sortingChoice);
     }
 }

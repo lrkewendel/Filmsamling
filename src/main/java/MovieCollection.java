@@ -1,13 +1,12 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class MovieCollection {
     private ArrayList<Movie> movies;
-
     public MovieCollection() {
         movies = new ArrayList<>();
     }
-
 
 
     public void addMovie(String title, String director, int yearCreated, boolean inColor, int lengthInMinutes, String genre) {
@@ -16,15 +15,10 @@ public class MovieCollection {
         movies.add(movie);
     }
 
-    public void addMovie(Movie movie){
-        movies.add(movie);
-    }
+    public void addMovie(Movie movie){movies.add(movie);}
 
 
-    public ArrayList<Movie> getMovies() {
-
-        return movies;
-    }
+    public ArrayList<Movie> getMovies() {return movies;}
 
     public int getNumberOfMovies() {
         return movies.size();
@@ -41,8 +35,24 @@ public class MovieCollection {
         return matches;
     }
 
+    public void sortMovies(String sortingChoice){
+
+        Comparator<Movie> c = switch (sortingChoice.toLowerCase()){
+            case "titel" -> Comparator.comparing(Movie::getTitle);
+            case "instruktør" -> Comparator.comparing(Movie::getDirector);
+            case "årstal" -> Comparator.comparing(Movie::getYearCreated);
+            case "farver" -> Comparator.comparing(Movie::isInColor);
+            case "længde" -> Comparator.comparing(Movie::getLengthInMinutes);
+            case "genre" -> Comparator.comparing(Movie::getGenre);
+            default -> Comparator.comparing(Movie::getTitle);
+        };
+
+        this.movies.sort(c);
+    }
+
     public boolean editMovie(Movie movie, String title, String director, int yearCreated,
                              boolean inColor, int lengthInMinutes, String genre) {
+
         if (!movies.contains(movie)) {
             return false;
         }
@@ -56,9 +66,7 @@ public class MovieCollection {
         return true;
     }
 
-    public boolean deleteMovie(Movie movie) {
-        return movies.remove(movie);
-    }
+    public boolean deleteMovie(Movie movie) {return movies.remove(movie);}
 
     public ArrayList<Movie> getMoviesNotWatchedSince(LocalDate date) {
         ArrayList<Movie> result = new ArrayList<>();
@@ -72,7 +80,4 @@ public class MovieCollection {
 
         return result;
     }
-
-
-
 }

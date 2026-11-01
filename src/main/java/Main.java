@@ -3,8 +3,5 @@ public class Main {
 
         UserInterface userInterface = new UserInterface();
         userInterface.startProgram();
-
-
-
     }
 }
