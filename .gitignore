@@ -37,3 +37,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Lokale filmdata ###
+movies.csv
+test-movies.csv
