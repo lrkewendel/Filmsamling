@@ -16,24 +16,24 @@
 
 Før I kigger på koden, så kig på, hvad der ellers ligger i repositoriet.
 
-* [✅] Er der en `.gitignore`-fil?
-* [✅] 💣 Er der uvedkommende filer i GitHub (fx `target`-mappen, `.class`-filer, `movies.csv`)?
-* [✅ ] Er der en `README.md` med fornavn og GitHub-brugernavn på hvert medlem og en forklaring på,
+* [ ✅ ] Er der en `.gitignore`-fil?
+* [ ✅ ] 💣 Er der uvedkommende filer i GitHub (fx `target`-mappen, `.class`-filer, `movies.csv`)?
+* [ ✅ ] Er der en `README.md` med fornavn og GitHub-brugernavn på hvert medlem og en forklaring på,
       hvordan man kører programmet?
-* [✅ ] Ligger dokumentation og andet ikke-kode i en `docs`-mappe – både klassediagram og
+* [ ✅ ] Ligger dokumentation og andet ikke-kode i en `docs`-mappe – både klassediagram og
       `furps.md` (mindst ét krav pr. bogstav)?
-* [] Passer klassediagrammet med koden?
-* [❌ ] Viser historikken commits fra **alle** i gruppen?
-* [✅ ] Er commit-beskederne til at forstå – kan man se, hvad hver commit gjorde?
+* [ ➖ ] Passer klassediagrammet med koden?
+* [ ❌ ] Viser historikken commits fra **alle** i gruppen?
+* [ ✅ ] Er commit-beskederne til at forstå – kan man se, hvad hver commit gjorde?
 
 ---
 
 ## Kør programmet og testene
 
-* [✅ ] Kan projektet åbnes og kompileres uden fejl?
-* [✅ ] Starter programmet, også når der ingen `movies.csv` er?
-* [✅ ] Er **alle** tests grønne? *Antal tests:*
-* [❌ ] 💣 Går programmet ned, hvis man skriver bogstaver, hvor der skal stå et tal?
+* [ ✅ ] Kan projektet åbnes og kompileres uden fejl?
+* [ ✅ ] Starter programmet, også når der ingen `movies.csv` er?
+* [ ✅ ] Er **alle** tests grønne? *Antal tests:*
+* [ ❌ ] 💣 Går programmet ned, hvis man skriver bogstaver, hvor der skal stå et tal?
 
 ---
 
@@ -42,11 +42,11 @@ Før I kigger på koden, så kig på, hvad der ellers ligger i repositoriet.
 Der bør være tre packages under `src/main/java`: `ui`, `domainmodel` og `datasource` (eller
 lignende navne).
 
-* [❌ ] Er der tre packages med sigende navne?
-* [❌ ] Er det let at regne ud, hvilken rolle hver package har?
-* [✅ ] Ligger hver klasse i den package, der passer til dens ansvar?
-* [❌ ] 💣 Importerer en klasse i `domainmodel` eller `datasource` noget fra `ui`?
-* [❌ ] Ligger testene i packages med samme navne under `src/test/java`?
+* [ ❌ ] Er der tre packages med sigende navne?
+* [ ❌ ] Er det let at regne ud, hvilken rolle hver package har?
+* [ ✅ ] Ligger hver klasse i den package, der passer til dens ansvar?
+* [ ❌ ] 💣 Importerer en klasse i `domainmodel` eller `datasource` noget fra `ui`?
+* [ ❌ ] Ligger testene i packages med samme navne under `src/test/java`?
 
 ---
 
@@ -61,36 +61,36 @@ Comparator-klasserne har deres eget afsnit længere nede.
 
 ### Klassen: `-navn-`
 
-* [✅ ] Er klassen godt navngivet?
-* [✅ ] Er det let at regne ud, hvilken rolle klassen har?
-* [✅ ] Er der brugt tydelig ental/flertal for at vise, om klassen indeholder ét eller flere
+* [ ✅ ] Er klassen godt navngivet?
+* [ ✅ ] Er det let at regne ud, hvilken rolle klassen har?
+* [ ✅ ] Er der brugt tydelig ental/flertal for at vise, om klassen indeholder ét eller flere
       underobjekter?
 * [❌ ] 💣 Er der `System.out` eller `Scanner` i klassen, selv om den ikke er `UserInterface`?
 
 #### Attributter / fields
 
-* [✅ ] 💣 Er der oprettet attributter, der burde være lokale variable i stedet?
-* [✅ ] 💣 Er der erklæret ubenyttede attributter?
+* [ ✅ ] 💣 Er der oprettet attributter, der burde være lokale variable i stedet?
+* [ ✅ ] 💣 Er der erklæret ubenyttede attributter?
 
 **Er attributter navngivet godt?**
 
-* [✅ ] Er navnene selvforklarende?
-* [✅] Er navnene fra "problemdomænet"?
-* [✅ ] Er navnene tydeligt og korrekt ental eller flertal?
-* [✅ ] Er navnene alle på samme sprog (engelsk)?
+* [ ✅ ] Er navnene selvforklarende?
+* [ ✅] Er navnene fra "problemdomænet"?
+* [ ✅ ] Er navnene tydeligt og korrekt ental eller flertal?
+* [ ✅ ] Er navnene alle på samme sprog (engelsk)?
 
 **Har attributter korrekt access?**
 
-* [✅ ] Er der brugt `private`?
-* [✅ ] Er der getter og setter (hvis nødvendigt)?
-* [✅ ] 💣 Er attributter gjort `public` uden getter og setter?
-* [✅ ] 💣 Er der hverken brugt `private` eller `public`, men bare "ingenting"?
+* [ ✅ ] Er der brugt `private`?
+* [ ✅ ] Er der getter og setter (hvis nødvendigt)?
+* [ ✅ ] 💣 Er attributter gjort `public` uden getter og setter?
+* [ ✅ ] 💣 Er der hverken brugt `private` eller `public`, men bare "ingenting"?
 
 **Getters / setters**
 
-* [✅ ] 💣 Er der ubenyttede get- og set-metoder?
-* [✅ ] 💣 Er der metoder kaldet `get` eller `set`, som ikke er en getter/setter?
-* [✅ ] 💣 Eller omvendt: er der gettere eller settere, der hedder noget andet end `get`, `set` eller
+* [ ✅ ] 💣 Er der ubenyttede get- og set-metoder?
+* [ ✅ ] 💣 Er der metoder kaldet `get` eller `set`, som ikke er en getter/setter?
+* [ ✅ ] 💣 Eller omvendt: er der gettere eller settere, der hedder noget andet end `get`, `set` eller
       (for `boolean`) `is`?
 
 #### Metoder
@@ -101,18 +101,18 @@ Kig på hver metode, først "udefra", altså uden at læse koden inde i metodern
 
 **Er metoder navngivet godt?**
 
-* [✅ ] Er navnene selvforklarende?
-* [✅ ] Er navnene fra "problemdomænet"?
-* [✅ ] Er det tydeligt, hvad hver metode gør, ud fra sit navn?
-* [✅ ] Er det tydeligt nok ud fra navnet, om metoder returnerer eller modtager værdier?
-* [✅ ] Hvis metoden modtager parametre, er det så umiddelbart til at regne ud, hvad de er til, ud fra
+* [ ✅ ] Er navnene selvforklarende?
+* [ ✅ ] Er navnene fra "problemdomænet"?
+* [ ✅ ] Er det tydeligt, hvad hver metode gør, ud fra sit navn?
+* [ ✅ ] Er det tydeligt nok ud fra navnet, om metoder returnerer eller modtager værdier?
+* [ ✅ ] Hvis metoden modtager parametre, er det så umiddelbart til at regne ud, hvad de er til, ud fra
       navngivningen?
-* [✅ ] Hvis metoden returnerer en værdi, giver datatypen så umiddelbar mening?
-* [✅ ] Er der en fornuftig ensartethed/struktur i navngivningen af metoderne?
-* [✅ ] Er metodenavnene navngivet med korrekt brug af `camelCase`?
-* [✅ ] Er parameternavne navngivet med korrekt brug af `camelCase`?
-* [✅✅ ] Er navnene alle på samme sprog (engelsk)?
-* [ ] 💣 Er der metoder, der gør to ting – fx både finder noget og udskriver det?
+* [ ✅ ] Hvis metoden returnerer en værdi, giver datatypen så umiddelbar mening?
+* [ ✅ ] Er der en fornuftig ensartethed/struktur i navngivningen af metoderne?
+* [ ✅ ] Er metodenavnene navngivet med korrekt brug af `camelCase`?
+* [ ✅ ] Er parameternavne navngivet med korrekt brug af `camelCase`?
+* [ ✅ ] Er navnene alle på samme sprog (engelsk)?
+* [ ✅ ] 💣 Er der metoder, der gør to ting – fx både finder noget og udskriver det?
 
 #### Kode
 
@@ -121,40 +121,40 @@ metode, men kigge på metoderne som helhed og notere, hvis der er et sted, der a
 
 **Lokale variabler inde i metoder**
 
-* [✅ ] Er variabler navngivet korrekt `camelCase`?
-* [✅ ] Er variablernes navne i tilstrækkelig grad fra "problemdomænet"?
-* [✅ ] Er variablerne erklæret, hvor de skal bruges?
-* [✅ ] Har variablerne den korrekte datatype?
-* [✅ ] Er navnene alle på samme sprog (engelsk)?
+* [ ✅ ] Er variabler navngivet korrekt `camelCase`?
+* [ ✅ ] Er variablernes navne i tilstrækkelig grad fra "problemdomænet"?
+* [ ✅ ] Er variablerne erklæret, hvor de skal bruges?
+* [ ✅ ] Har variablerne den korrekte datatype?
+* [ ✅ ] Er navnene alle på samme sprog (engelsk)?
 
 **Generel kodestil**
 
-* [✅ ] Er koden pænt (og korrekt) formateret med indrykninger etc.?
-* [✅] Er koden "skimbar" og umiddelbart let at overskue, uden at skulle nærlæse hver linje?
-* [✅ ] 💣 Er der smarte "ninja-tricks", der gør koden kompakt, men måske sværere for nogle at læse?
-* [✅ ] 💣 Er der kode, der er kopieret flere steder, og som burde være én metode?
+* [ ✅ ] Er koden pænt (og korrekt) formateret med indrykninger etc.?
+* [ ✅] Er koden "skimbar" og umiddelbart let at overskue, uden at skulle nærlæse hver linje?
+* [ ✅ ] 💣 Er der smarte "ninja-tricks", der gør koden kompakt, men måske sværere for nogle at læse?
+* [ ✅ ] 💣 Er der kode, der er kopieret flere steder, og som burde være én metode?
 
 **Exceptions**
 
-* [❌ ] Bliver exceptions fanget dér, hvor man ved, hvad brugeren skal have at vide (typisk
+* [ ❌ ] Bliver exceptions fanget dér, hvor man ved, hvad brugeren skal have at vide (typisk
       `UserInterface`)?
-* [✅ ] Bliver ugyldige værdier afvist med en `throw` og en forklarende besked?
-* [✅ ] 💣 Bliver exceptions blot håndteret med en tom `catch` eller en `catch` med `printStackTrace`?
-* [✅ ] 💣 Bliver `NullPointerException` eller `IndexOutOfBoundsException` fanget, hvor en `if` burde
+* [ ✅ ] Bliver ugyldige værdier afvist med en `throw` og en forklarende besked?
+* [ ✅ ] 💣 Bliver exceptions blot håndteret med en tom `catch` eller en `catch` med `printStackTrace`?
+* [ ✅ ] 💣 Bliver `NullPointerException` eller `IndexOutOfBoundsException` fanget, hvor en `if` burde
       have forhindret dem?
-* [✅ ] Kan programmet fortsætte efter en exception?
-* [✅ ] Er der lavet egne exception-typer – og giver de bedre mening end de indbyggede?
+* [ ✅ ] Kan programmet fortsætte efter en exception?
+* [ ✅ ] Er der lavet egne exception-typer – og giver de bedre mening end de indbyggede?
 
 #### Kommentarer
 
-* [❌ ] Er der kommentarer, der fx viser, hvor en fancy løsning er fundet på nettet?
-* [❌ ] Er der kommentarer, der beskriver, hvordan/hvorfor en metode er opbygget anderledes end
+* [ ❌ ] Er der kommentarer, der fx viser, hvor en fancy løsning er fundet på nettet?
+* [ ❌ ] Er der kommentarer, der beskriver, hvordan/hvorfor en metode er opbygget anderledes end
       forventet?
-* [❌ ] Er der kommentarer til udvikleren selv om ting, der skal rettes/ændres i fremtiden?
-* [✅ ] 💣 Er der kommentarer, der ikke længere giver mening, og som burde have været slettet?
-* [✅ ] 💣 Er der udkommenteret kode, der burde være slettet?
-* [❌ ] Er der gode kommentarer i programmet?
-* [✅ ] 💣 Er der overflødige kommentarer? Kunne fx være `i++; // lægger en til i`
+* [ ❌ ] Er der kommentarer til udvikleren selv om ting, der skal rettes/ændres i fremtiden?
+* [ ✅ ] 💣 Er der kommentarer, der ikke længere giver mening, og som burde have været slettet?
+* [ ✅ ] 💣 Er der udkommenteret kode, der burde være slettet?
+* [ ❌ ] Er der gode kommentarer i programmet?
+* [ ✅ ] 💣 Er der overflødige kommentarer? Kunne fx være `i++; // lægger en til i`
 
 ---
 
@@ -162,12 +162,12 @@ metode, men kigge på metoderne som helhed og notere, hvis der er et sted, der a
 
 Ud over spørgsmålene under *Klasser*:
 
-* [✅ ] Er al læsning og skrivning af filen samlet i `FileHandler`?
-* [✅ ] 💣 Ved andre klasser end `FileHandler` noget om filformatet (fx semikolon eller feltrækkefølge)?
-* [✅ ] Bliver filen lukket (`close()`) efter læsning og skrivning?
-* [✅ ] Overlever alle felter en tur gennem filen – også æ, ø, å og datoen?
-* [✅ ] Går programmet videre, hvis en linje i filen er ødelagt?
-* [✅ ] Skrives filen kun, når der er ændringer?
+* [ ✅ ] Er al læsning og skrivning af filen samlet i `FileHandler`?
+* [ ✅ ] 💣 Ved andre klasser end `FileHandler` noget om filformatet (fx semikolon eller feltrækkefølge)?
+* [ ✅ ] Bliver filen lukket (`close()`) efter læsning og skrivning?
+* [ ✅ ] Overlever alle felter en tur gennem filen – også æ, ø, å og datoen?
+* [ ✅ ] Går programmet videre, hvis en linje i filen er ødelagt?
+* [ ✅ ] Skrives filen kun, når der er ændringer?
 
 ---
 
@@ -176,45 +176,38 @@ Ud over spørgsmålene under *Klasser*:
 Reviewes samlet. Hver comparator bør have et navn med den egenskab, den sammenligner, og ordet
 `Comparator` – fx `YearComparator`.
 
-* [ ] Er klasserne godt navngivet?
-* [ ] Er der brugt `@Override` på `compare` (og på `compareTo` i `Movie`)?
-* [ ] Er `compare` implementeret med `compareTo`/`compareToIgnoreCase` eller `Integer.compare` –
+* [ ➖ ] Er klasserne godt navngivet?
+* [ ➖ ] Er der brugt `@Override` på `compare` (og på `compareTo` i `Movie`)?
+* [ ➖ ] Er `compare` implementeret med `compareTo`/`compareToIgnoreCase` eller `Integer.compare` –
       i stedet for egne `if`-sætninger, der returnerer `-1`, `0` og `1`?
-* [ ] Kan koden i `compare` simplificeres?
-* [ ] Er der kun **ét** sted i koden, der vælger comparator ud fra brugerens valg?
-* [ ] 💣 Ændrer sorteringen rækkefølgen i selve samlingen?
+* [ ➖ ] Kan koden i `compare` simplificeres?
+* [ ➖ ] Er der kun **ét** sted i koden, der vælger comparator ud fra brugerens valg?
+* [ ➖ ] 💣 Ændrer sorteringen rækkefølgen i selve samlingen?
 
 ---
 
 ## Tests
 
-* [✅ ] Er der en testklasse for hver klasse med logik (`Movie`, `MovieCollection`, `FileHandler`,
+* [ ✅ ] Er der en testklasse for hver klasse med logik (`Movie`, `MovieCollection`, `FileHandler`,
       comparatorerne)?
-* [✅ ] Er testmetodernes navne sigende – kan man se, hvad der testes, uden at læse koden?
-* [✅ ] Følger testene Arrange – Act – Assert?
-* [✅ ] Er de "kedelige" tilfælde testet: tom samling, ingen match, en film, der ikke findes?
-* [✅ ] Er grænserne testet – fx årstal 1887/1888, en dato præcis på grænsen?
-* [✅ ] Er det testet, at ugyldige værdier afvises (`assertThrows`)?
-* [✅ ] 💣 Afhænger testene af hinanden eller af den rækkefølge, de køres i?
-* [✅ ] 💣 Afhænger testene af dagens dato, så de kan blive røde i morgen?
-* [✅ ] 💣 Kan testene komme til at overskrive eller slette den rigtige `movies.csv`?
-* [✅ ] 💣 Er der tests, der ikke tester noget (ingen `assert...`)?
+* [ ✅ ] Er testmetodernes navne sigende – kan man se, hvad der testes, uden at læse koden?
+* [ ✅ ] Følger testene Arrange – Act – Assert?
+* [ ✅ ] Er de "kedelige" tilfælde testet: tom samling, ingen match, en film, der ikke findes?
+* [ ✅ ] Er grænserne testet – fx årstal 1887/1888, en dato præcis på grænsen?
+* [ ✅ ] Er det testet, at ugyldige værdier afvises (`assertThrows`)?
+* [ ✅ ] 💣 Afhænger testene af hinanden eller af den rækkefølge, de køres i?
+* [ ✅ ] 💣 Afhænger testene af dagens dato, så de kan blive røde i morgen?
+* [ ✅ ] 💣 Kan testene komme til at overskrive eller slette den rigtige `movies.csv`?
+* [ ✅ ] 💣 Er der tests, der ikke tester noget (ingen `assert...`)?
 
 ---
 
 ## Yderligere kommentarer til koden fra reviewerne
 
-*Her kan I skrive yderligere noter – ting, der ikke lige passer ind i skemaet ovenfor. Ros til
-særligt elegant kode, spørgsmål til, hvordan programmørerne fandt på en løsning.*
-
-- mangler at opdatere R i FURPS til "Hvor". "del 6 er under opfyldt?" lige pt.
-- Fejlbeskrivelse kommer først når man har tastet alt ind, vil gerne have det kommer med det samme 
-- man kan se en film før den er udkommet.
-
 **Det er særlig godt:**
+* Koden er pæn og overskuelig ☺️
 
 **De tre vigtigste ting at rette:**
-
-1. - Fejlbeskrivelse kommer først når man har tastet alt ind, vil gerne have det kommer med det samme 
-2. - man kan se en film før den er udkommet
-3. - mangler at opdatere R i FURPS til "Hvor". "del 6 er under opfyldt?" lige pt.
+1. Fejlbeskrivelse kommer først når man har tastet alt ind, vil gerne have det kommer med det samme 
+2. Man kan se en film før den er udkommet
+3. Mangler at opdatere R i FURPS til "Hvor". "del 6 er under opfyldt?" lige pt.
