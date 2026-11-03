@@ -153,13 +153,13 @@ public class UserInterface {
             System.out.print("Er filmen i farver? (ja/nej): ");
             colorInput = scanner.nextLine().trim();
 
-            if (!colorInput.equalsIgnoreCase("ja") && !colorInput.equalsIgnoreCase("nej")) {
+            if (!colorInput.equalsIgnoreCase("ja") && !colorInput.equalsIgnoreCase("j") && !colorInput.equalsIgnoreCase("nej") && !colorInput.equalsIgnoreCase("n")) {
                 System.out.println("Hovsa! Skriv \"ja\" eller \"nej\" for at vælge, om filmen er i farver.");
             }
 
-        } while (!colorInput.equalsIgnoreCase("ja") && !colorInput.equalsIgnoreCase("nej"));
+        } while (!colorInput.equalsIgnoreCase("ja") && !colorInput.equalsIgnoreCase("j") && !colorInput.equalsIgnoreCase("nej") && !colorInput.equalsIgnoreCase("n"));
 
-        boolean inColor = colorInput.equalsIgnoreCase("ja");
+        boolean inColor = colorInput.equalsIgnoreCase("ja") || colorInput.equalsIgnoreCase("j");
 
         // LÆNGDE I MINUTTER:
         int lengthInMinutes = readInt("Længde i minutter: ");
@@ -215,7 +215,8 @@ public class UserInterface {
         }
         LocalDate watchedDate = readDate("\nSkriv datoen, hvor du så filmen (DD-MM-ÅÅÅÅ)" + " eller tryk \"Enter\", hvis du har set filmen i dag: ");
 
-        try {controller.markAsWatched(selectedMovie, watchedDate);
+        try {
+            controller.markAsWatched(selectedMovie, watchedDate);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             System.out.println(ITALIC + "\n" + capitalizeFirstLetter(selectedMovie.getTitle()) + " er markeret som set d. " + watchedDate.format(formatter) + RESET);
         } catch (IllegalArgumentException e) {
@@ -346,23 +347,7 @@ public class UserInterface {
         // NYT UDGIVELSESÅR:
         System.out.println(ITALIC + "Udgivelsesår: " + movieToEdit.getYearCreated() + RESET);
 
-        int newYearCreated = movieToEdit.getYearCreated();
-
-        while (true) {
-            System.out.print("Nyt udgivelsesår: ");
-            String yearInput = scanner.nextLine().trim();
-
-            if (yearInput.isEmpty()) {
-                break;
-            }
-
-            try {
-                newYearCreated = Integer.parseInt(yearInput);
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Hovsa! Du skal angive et gyldigt årstal, f.eks. \"2026\".");
-            }
-        }
+        int newYearCreated = readInt("Nyt udgivelsesår: ", movieToEdit.getYearCreated());
 
         // NYT VALG, I FARVER?:
         String colorText;
@@ -397,22 +382,7 @@ public class UserInterface {
         // NY LÆNGDE I MINUTTER:
         System.out.println(ITALIC + "Længde i minutter: " + movieToEdit.getLengthInMinutes() + RESET);
 
-        int newLenghtInMinutes = movieToEdit.getLengthInMinutes();
-
-        while (true) {
-            System.out.print("Ny længde i minutter: ");
-            String lenghtInput = scanner.nextLine().trim();
-
-            if (lenghtInput.isEmpty()) {
-                break;
-            }
-            try {
-                newLenghtInMinutes = Integer.parseInt(lenghtInput);
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Hovsa! Du skal angive filmens længde i minutter som et tal, f.eks. \"120\".");
-            }
-        }
+        int newLenghtInMinutes = readInt("Ny længde i minutter: " + movieToEdit.getLengthInMinutes());
 
         // NY GENRE:
         System.out.print("\nGenreoversigt: " + "\n|");
@@ -595,11 +565,21 @@ public class UserInterface {
         return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 
-    // KONVERTERER TIL HELTAL:
+    //2x readInt metodeoverloading - samme navn forskellige parametre
+    //læser helt tal, brugeren skal indtaste værdi
     private int readInt(String prompt) {
+        return readInt(prompt, null);
+    }
+
+    // Læser helt tal og Enter beholder gammel værdi
+    private int readInt(String prompt, Integer currentValue) {
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine().trim();
+
+            if (input.isEmpty() && currentValue != null) {
+                return currentValue;
+            }
 
             try {
                 return Integer.parseInt(input);
