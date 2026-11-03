@@ -1,8 +1,5 @@
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLOutput;
-import java.time.Year;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -92,7 +89,8 @@ public class UserInterface {
         try {
             controller.loadMovies();
         } catch (FileNotFoundException e) {
-            System.out.println("Du har endnu ingen film i din samling.\nStart din filmsamling ved at tilføje din første film!\n");        }
+            System.out.println("Du har endnu ingen film i din samling.\nStart din filmsamling ved at tilføje din første film!\n");
+        }
 
         while (running) {
 
@@ -137,75 +135,29 @@ public class UserInterface {
         System.out.print("Titel: ");
         String title = scanner.nextLine();
 
-        do {
-            if (title.isEmpty()) {
-                System.out.print("Skriv venligst filmens titel: ");
-                title = scanner.nextLine();
-            }
-
-        } while (title.isEmpty());
-
         // INSTRUKTØR:
         System.out.print("Instruktør: ");
         String director = scanner.nextLine();
 
-        do {
-            if (director.isEmpty()) {
-                System.out.print("Skriv venligst instruktørens navn: ");
-                director = scanner.nextLine();
-            }
-
-        } while (director.isEmpty());
-
         // UDGIVELSESÅR:
-        Integer yearCreated;
-
-        LocalDate today = LocalDate.now();
-        LocalDate nextYear = today.plusYears(1);
-
-        do {
-            yearCreated = readInt("Udgivelsesår: ");
-
-            if (yearCreated == null) {
-                System.out.println("Hovsa! Du skal angive et gyldigt årstal, f.eks. \"2026\".");
-            } else if (yearCreated < 1888) {
-                System.out.println("Hovsa! Der er ikke blevet lavet film før 1888.");
-                yearCreated = null;
-            } else if ((yearCreated) > nextYear.getYear()) {
-                System.out.println("Hovsa! Udgivelsesåret skal være før " + nextYear.getYear() + ".");
-                yearCreated = null;
-            }
-
-        } while (yearCreated == null);
+        int yearCreated = readInt("Udgivelsesår: ");
 
         // I FARVER?:
         String colorInput;
-
         do {
             System.out.print("Er filmen i farver? (ja/nej): ");
             colorInput = scanner.nextLine().trim();
 
             if (!colorInput.equalsIgnoreCase("ja") && !colorInput.equalsIgnoreCase("nej")) {
-                System.out.println("Hovsa! Skriv \"ja\" eller \"nej\" for at vælge, om filmen er i farver.");            }
+                System.out.println("Hovsa! Skriv \"ja\" eller \"nej\" for at vælge, om filmen er i farver.");
+            }
 
         } while (!colorInput.equalsIgnoreCase("ja") && !colorInput.equalsIgnoreCase("nej"));
 
         boolean inColor = colorInput.equalsIgnoreCase("ja");
 
         // LÆNGDE I MINUTTER:
-        Integer lengthInMinutes;
-
-        do {
-            lengthInMinutes = readInt("Længde i minutter: ");
-
-            if (lengthInMinutes == null) {
-                System.out.println("Hovsa! Filmlængden skal angives i tal, f.eks. \"120\".");
-            } else if (lengthInMinutes < 1) {
-                System.out.println("Hovsa! Filmen skal være mindst ét minut lang.");
-                lengthInMinutes = null;
-            }
-
-        } while (lengthInMinutes == null);
+        int lengthInMinutes = readInt("Længde i minutter: ");
 
         // GENRE:
         System.out.print("\nGenreoversigt: " + "\n|");
@@ -235,12 +187,15 @@ public class UserInterface {
 
         // TILFØJER FILMEN TIL SAMLING:
         String capitalizedTitle = capitalizeFirstLetter(title);
-
-        System.out.print(ITALIC + "\n" + capitalizedTitle + " blev tilføjet til din filmsamling!\n" + RESET);
+        try {
+            controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, String.valueOf(chosenGenre));
+            System.out.print(ITALIC + "\n" + capitalizedTitle + " blev tilføjet til din filmsamling!\n" + RESET);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Filmen blev ikke oprettet: " + e.getMessage());
+        }
         System.out.println(GRAY + "⎯".repeat(35) + RESET + "\n");
-
-        controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, String.valueOf(chosenGenre));
     }
+
 
     // 2. MARKÉR SOM SET:
     private void markAsSeen() {
@@ -399,13 +354,13 @@ public class UserInterface {
             System.out.println("Hovsa! Vi fandt ingen film, der matcher din søgning \"" + ITALIC + searchText + RESET + "\".");
             return;
         }
-        if (!matches.contains(searchText)) {
-            System.out.println("\nFilm fra din samling, der matcher din søgning: \"" + ITALIC + searchText + RESET + "\"");
-            for (Movie match : matches) {
-                printMovie(match);
-            }
+        System.out.println("Film der matcher din søgning " + searchText);
+
+        for (Movie movie : matches) {
+            printMovie(movie);
         }
     }
+
 
     // 6. IKKE SET LÆNGE:
     private void notSeenRecently() {
@@ -421,45 +376,9 @@ public class UserInterface {
         System.out.println(BOLD + "\n\n" + " ".repeat(11) + "⭑ REDIGÈR EN FILM FRA DIN SAMLING ⭑" + RESET);
         System.out.println(GRAY + "━".repeat(58) + "\n" + RESET);
 
-        System.out.print("Hvilken film fra din samling skal ændres?\nTryk \"Enter\" for at se alle film eller søg efter en film: ");
-
-        String searchText = scanner.nextLine().trim();
-        ArrayList<Movie> matches;
-
-        if (searchText.isEmpty()) {
-            matches = controller.getMovies();
-        } else {
-            matches = controller.searchMovies(searchText);
-        }
-
-        if (matches.isEmpty()) {
-            System.out.println("Hovsa! Vi fandt ingen film, der matcher din søgning \"" + ITALIC + searchText + RESET + "\".");
+        Movie movieToEdit = selectMovie();
+        if (movieToEdit == null) {
             return;
-        }
-
-        Movie movieToEdit = null;
-
-        if (matches.size() == 1) {
-            movieToEdit = matches.get(0);
-
-        } else {
-            System.out.println("\nFlere film matchede din søgning.\n");
-
-            for (int i = 0; i < matches.size(); i++) {
-                System.out.print("[" + (i + 1) + "] ");
-                printMovie(matches.get(i));
-            }
-
-            System.out.print("\nVælg den film, som du vil ændre: ");
-
-            Integer choice = readInt("");
-
-            if (choice != null && choice > 0 && choice <= matches.size()) {
-                movieToEdit = matches.get(choice - 1);
-            } else {
-                System.out.println("Ugyldigt valg. Redigeringen blev afbrudt.");
-                return;
-            }
         }
 
         System.out.println("\n" + BOLD + ITALIC + movieToEdit.getTitle() + " redigeres..." + RESET);
@@ -468,60 +387,37 @@ public class UserInterface {
 
         // NY TITLE:
         System.out.print(ITALIC + "Titel: " + movieToEdit.getTitle() + RESET + "\nNy titel: ");
-        String newTitel = scanner.nextLine();
-        if (!newTitel.trim().
-
-                isEmpty()) {
-            movieToEdit.setTitle(newTitel);
+        String newTitle = scanner.nextLine();
+        if (newTitle.isBlank()) {
+            newTitle = movieToEdit.getTitle();
         }
-
         // NY INSTRUKTØR:
         System.out.print(ITALIC + "Instruktør: " + movieToEdit.getDirector() + RESET + "\nNy instruktør: ");
         String newDirector = scanner.nextLine();
-        if (!newDirector.trim().
-
-                isEmpty()) {
-            movieToEdit.setDirector(newDirector);
+        if (newDirector.isBlank()) {
+            newDirector = movieToEdit.getDirector();
         }
 
         // NYT UDGIVELSESÅR:
         System.out.println(ITALIC + "Udgivelsesår: " + movieToEdit.getYearCreated() + RESET);
 
-        LocalDate today = LocalDate.now();
-        int nextYear = today.plusYears(1).getYear();
+        int newYearCreated = movieToEdit.getYearCreated();
 
-        String yearInput;
-        Integer newYearCreated;
-
-        do {
+        while (true) {
             System.out.print("Nyt udgivelsesår: ");
-            yearInput = scanner.nextLine().trim();
+            String yearInput = scanner.nextLine().trim();
 
             if (yearInput.isEmpty()) {
-                newYearCreated = movieToEdit.getYearCreated();
                 break;
             }
 
             try {
                 newYearCreated = Integer.parseInt(yearInput);
-
-                if (newYearCreated < 1888) {
-                    System.out.println("Hovsa! Der blev ikke lavet film før 1888.");
-                    newYearCreated = null;
-
-                } else if (newYearCreated > nextYear) {
-                    System.out.println("Hovsa! Udgivelsesåret skal være før " + nextYear + ".");
-                    newYearCreated = null;
-                }
-
+                break;
             } catch (NumberFormatException e) {
                 System.out.println("Hovsa! Du skal angive et gyldigt årstal, f.eks. \"2026\".");
-                newYearCreated = null;
             }
-
-        } while (newYearCreated == null);
-
-        movieToEdit.setYearCreated(newYearCreated);
+        }
 
         // NYT VALG, I FARVER?:
         String colorText;
@@ -532,64 +428,46 @@ public class UserInterface {
         }
         System.out.print(ITALIC + "Filmen er i " + colorText + RESET + "\n");
 
-        String newColor;
+        boolean newInColor = movieToEdit.isInColor();
 
-        do {
+        while (true) {
             System.out.print("Nyt valg, er filmen i farver? (ja/nej): ");
 
-            newColor = scanner.nextLine();
+            String colorInput = scanner.nextLine().trim();
 
-            if (newColor.isEmpty()) {
-                movieToEdit.setInColor(movieToEdit.isInColor());
+            if (colorInput.isEmpty()) {
                 break;
             }
-            if (newColor.equalsIgnoreCase("ja")) {
-                movieToEdit.setInColor(movieToEdit.isInColor());
+            if (colorInput.equalsIgnoreCase("ja") || colorInput.equalsIgnoreCase("j")) {
+                newInColor = true;
                 break;
             }
-            if (newColor.equalsIgnoreCase("nej")) {
-                movieToEdit.setInColor(!movieToEdit.isInColor());
-
+            if (colorInput.equalsIgnoreCase("nej") || colorInput.equalsIgnoreCase("n")) {
+                newInColor = false;
+                break;
             }
-            if (!newColor.equalsIgnoreCase("ja") && !newColor.equalsIgnoreCase("nej")) {
-                System.out.println("Angiv venligst \"ja\" eller \"nej\" for at vælge, om filmen er i farver.");
-            }
-
-        } while (!newColor.equalsIgnoreCase("ja") && !newColor.equalsIgnoreCase("nej"));
-
+            System.out.println("Hovsa! Svar ja, j, nej eller n.");
+        }
 
         // NY LÆNGDE I MINUTTER:
         System.out.println(ITALIC + "Længde i minutter: " + movieToEdit.getLengthInMinutes() + RESET);
 
-        String lengthInput;
-        Integer editLengthInMinutes;
+        int newLenghtInMinutes = movieToEdit.getLengthInMinutes();
 
-        do {
+        while (true) {
             System.out.print("Ny længde i minutter: ");
-            lengthInput = scanner.nextLine().trim();
+            String lenghtInput = scanner.nextLine().trim();
 
-            if (lengthInput.isEmpty()) {
-                editLengthInMinutes = movieToEdit.getLengthInMinutes();
+            if (lenghtInput.isEmpty()) {
                 break;
             }
-
             try {
-                editLengthInMinutes = Integer.parseInt(lengthInput);
-
-
-                if (editLengthInMinutes < 1) {
-                    System.out.println("Hovsa! Filmen skal være mindst ét minut lang.");
-                    editLengthInMinutes = null;
-                }
-
+                newLenghtInMinutes = Integer.parseInt(lenghtInput);
+                break;
             } catch (NumberFormatException e) {
                 System.out.println("Hovsa! Du skal angive filmens længde i minutter som et tal, f.eks. \"120\".");
-                editLengthInMinutes = null;
             }
-
-        } while (editLengthInMinutes == null);
-
-        movieToEdit.setLengthInMinutes(editLengthInMinutes);
+        }
 
         // NY GENRE:
         System.out.print("\nGenreoversigt: " + "\n|");
@@ -603,39 +481,45 @@ public class UserInterface {
         System.out.print("\n\n" + ITALIC + "Genre: " + movieGenre.getDanishName() + RESET + "\n");
 
 
-        Genre newGenre = null;
+        String newGenre = movieToEdit.getGenre();
 
-        do {
-            System.out.print("Ny genre: ");
+        while (true) {
+            System.out.println("Ny genre: ");
             String genreInput = scanner.nextLine().trim();
 
             if (genreInput.isEmpty()) {
                 break;
             }
+            Genre chosenGenre = null;
 
             for (Genre type : Genre.values()) {
                 if (type.getDanishName().equalsIgnoreCase(genreInput)) {
-                    newGenre = type;
+                    chosenGenre = type;
                     break;
                 }
             }
-
-            if (newGenre == null) {
-                System.out.println("\"" + genreInput + "\" er ikke en gyldig genre. Vælg en genre fra listen.");
+            if (chosenGenre != null) {
+                newGenre = chosenGenre.getDanishName();
+                break;
             }
-
-        } while (newGenre == null);
-
-        if (newGenre != null) {
-            movieToEdit.setGenre(newGenre.getDanishName());
+            System.out.println("\"" + genreInput + "\" er ikke en gyldig genre. Vælg en genre fra listen.");
         }
 
         // RETTELSER OPDATERET:
-        System.out.println("\nFilmen blev opdateret til: ");
+        try {
+            boolean edited = controller.editMovie(movieToEdit, newTitle, newDirector, newYearCreated, newInColor, newLenghtInMinutes, newGenre);
 
-        printMovie(movieToEdit);
+            if (edited) {
+                System.out.println("Filmen blev opdateret til: ");
+                printMovie(movieToEdit);
+            } else {
+                System.out.println("Hovs! Filmen findes ikke længere i din samling. ");
+            }
+        }
+        catch(IllegalArgumentException e){
+            System.out.println("Filmen blev ikke ændret: " + e.getMessage());
+        }
         System.out.println("");
-
     }
 
 
@@ -687,6 +571,37 @@ public class UserInterface {
             System.out.println("Der opstod en fejl under sletningen. Filmen kunne ikke slettes.");
         }
     }
+
+    //vælg en film
+    private Movie selectMovie() {
+        System.out.println("Søg efter en film: ");
+        String searchText = scanner.nextLine().trim();
+
+        ArrayList<Movie> matches = controller.searchMovies(searchText);
+
+        if (matches.isEmpty()) {
+            System.out.println("ingen film matcher din søgning.");
+            return null;
+        }
+
+        for (int i = 0; i < matches.size(); i++) {
+            Movie movie = matches.get(i);
+
+            System.out.println((i + 1) + " " + movie.getTitle() + " " + movie.getYearCreated());
+        }
+        int number = readInt("Vælg nummer (0 = fortryd): ");
+
+        while (number < 0 || number > matches.size()) {
+            System.out.println("Vælg et nummer mellem 1 og " + matches.size() + " - eller 0 for at fortryde.");
+            number = readInt("Vælg nummer (0 = fortryd: ");
+        }
+        if (number == 0) {
+            return null;
+        }
+        return matches.get((number - 1));
+    }
+
+
 
     // UDSKRIV FILMINFO:
     private void printMovie(Movie movie) {
@@ -747,13 +662,16 @@ public class UserInterface {
     }
 
     // KONVERTERER TIL HELTAL:
-    private Integer readInt(String prompt) {
-
-        try {
+    private int readInt(String prompt) {
+        while (true) {
             System.out.print(prompt);
-            return Integer.parseInt(scanner.nextLine().trim());
-        } catch (NumberFormatException e) {
-            return null;
+            String input = scanner.nextLine().trim();
+
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println(input + " er ikke et helt tal. prøv igen.");
+            }
         }
     }
 }
