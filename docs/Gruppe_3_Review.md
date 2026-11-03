@@ -3,13 +3,13 @@
 Før I kigger på koden, så kig på, hvad der ellers ligger i repositoriet.
 
 * [x] Er der en `.gitignore`-fil?
-* [ ] 💣 Er der uvedkommende filer i GitHub (fx `target`-mappen, `.class`-filer, `movies.csv`)?
+* [x] 💣 Er der uvedkommende filer i GitHub (fx `target`-mappen, `.class`-filer, `movies.csv`)?
 * [x] Er der en `README.md` med fornavn og GitHub-brugernavn på hvert medlem og en forklaring på,
   hvordan man kører programmet?
 * [x] Ligger dokumentation og andet ikke-kode i en `docs`-mappe – både klassediagram og
   `furps.md` (mindst ét krav pr. bogstav)?
 * [ ] Passer klassediagrammet med koden?
-* [ ] Viser historikken commits fra **alle** i gruppen?
+* [x] Viser historikken commits fra **alle** i gruppen?
 * [x] Er commit-beskederne til at forstå – kan man se, hvad hver commit gjorde?
 
 ## Klasser
@@ -44,8 +44,8 @@ Comparator-klasserne har deres eget afsnit længere nede.
 * [x] Er testmetodernes navne sigende – kan man se, hvad der testes, uden at læse koden?
 * [x] Følger testene Arrange – Act – Assert?
 * [x] Er de "kedelige" tilfælde testet: tom samling, ingen match, en film, der ikke findes?
-* [ ] Er grænserne testet – fx årstal 1887/1888, en dato præcis på grænsen?
-* [ ] Er det testet, at ugyldige værdier afvises (`assertThrows`)?
+* [x] Er grænserne testet – fx årstal 1887/1888, en dato præcis på grænsen?
+* [x] Er det testet, at ugyldige værdier afvises (`assertThrows`)?
 * [x] 💣 Afhænger testene af hinanden eller af den rækkefølge, de køres i?
 * [x] 💣 Afhænger testene af dagens dato, så de kan blive røde i morgen?
 * [x] 💣 Kan testene komme til at overskrive eller slette den rigtige `movies.csv`?
@@ -59,9 +59,9 @@ Comparator-klasserne har deres eget afsnit længere nede.
 * Gode kommentarer
 
 ### Konstruktivt
-* I editMovie(), kan man tilføje forkerte værdier, såsom årstal: 0 eller lændge: 0. Hvorfor det?
-* Hvorfor bruger i ikke Controller metoder?
-* Hvad gør notSeenRecently() i UI?
-* Hvorfor har i ikke lavet en metode for sig til at validere selection? DNRY.
-* Hvorfor har i valgt at lave Enum til genre?
-* Controller har importeret packages som ikke bliver brugt. Hvorfor det?
+* ~~I editMovie(), kan man tilføje forkerte værdier, såsom årstal: 0 eller lændge: 0. Hvorfor det?~~
+* ~~Hvorfor bruger i ikke Controller metoder?~~
+* ~~Hvad gør notSeenRecently() i UI?~~
+* ~~Hvorfor har i ikke lavet en metode for sig til at validere selection? DNRY.~~
+* ~~Hvorfor har i valgt at lave Enum til genre?~~
+* ~~Controller har importeret packages som ikke bliver brugt. Hvorfor det?~~
