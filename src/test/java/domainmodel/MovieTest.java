@@ -40,6 +40,43 @@ class MovieTest {
         assertThrows(IllegalArgumentException.class, () -> new Movie(title, "JFK", 1960, false, 120, "thriller"));
     }
     @Test
+    void newMovieHasNotBeenWatched() {
+        //Arrange
+        Movie movie = new Movie("Jaws", "Steve. S", 1975, true, 120, "Action");
+
+        //Act + Assert
+        assertFalse (movie.hasBeenWatched());
+        assertNull(movie.getLastWatched());
+    }
+    @Test
+    void markAsWatchedSavesDate() {
+        //Arrange
+        Movie movie = new Movie ("H.P Prisoner of Azkaban", "J.K.R", 2000, true, 140, "Thriller");
+        LocalDate watchedDate = LocalDate.of(2026, 9, 24);
+
+        //Act
+        movie.markAsWatched(watchedDate);
+
+        //Assert
+        assertTrue(movie.hasBeenWatched());
+        assertEquals(watchedDate, movie.getLastWatched());
+    }
+    @Test
+    void daysSinceWatchedCountsAcroosMonths() {
+        //Arrange
+        Movie movie = new Movie("H.P Prisoner of Azkaban", "J.K.R", 2000, true, 140, "Thriller");
+
+        movie.markAsWatched(LocalDate.of(2026,9,24));
+        LocalDate today = LocalDate.of(2026,11,3);
+
+        //Act
+        long days = movie.getDaysSinceWatched(today);
+
+        //Assert
+        assertEquals(40L, days);
+    }
+
+    @Test
     void year1887IsRejected() {
         //Arrange
         int yearCreated = 1887;

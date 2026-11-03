@@ -1,5 +1,5 @@
 package domainmodel;
-
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +42,9 @@ class MovieCollectionTest {
 
         //Assert
         assertEquals(1, newcollection.getNumberOfMovies());
+
+        Movie movie = newcollection.getMovies().get(0);
+        assertEquals("Cars", movie.getTitle());
     }
 
     @Test
@@ -104,13 +107,14 @@ class MovieCollectionTest {
     @Test
     void editMovieChangesinfo() {
         //Arrange
-        Movie casablanca = collection.searchMovies("Casablanca").get(0);
+        Movie movie = collection.searchMovies("Casablanca").get(0);
 
         //Act
-        boolean edited = collection.editMovie(casablanca, "Cars", "John Lasseter", 2006, true, 116, "Animation");
+        boolean edited = collection.editMovie(movie, "Cars", "John Lasseter", 2006, true, 116, "Animation");
 
         //Assert
         assertTrue(edited);
+        assertEquals("Cars", movie.getTitle());
     }
 
     @Test
@@ -124,23 +128,7 @@ class MovieCollectionTest {
 
         //Assert
         assertFalse(edited);
-    }
-
-    @Test
-    void editMovieInvalidInputNoChange() {
-        //Arrange
-        Movie movie = collection.searchMovies("Casablanca").get(0);
-
-        //Act + Assert
-        assertThrows(IllegalArgumentException.class,() -> collection.editMovie(movie, "Test", "test2", 1800, true, 120, "Horror"));
-        //tester med årstallet afvises da en del af opgaven er at før 1888 skal afvises
-
-        assertEquals("Casablanca", movie.getTitle());
-        assertEquals("Michael Curtiz", movie.getDirector());
-        assertEquals(1942, movie.getYearCreated());
-        assertFalse(movie.isInColor());
-        assertEquals(102, movie.getLengthInMinutes());
-        assertEquals("Drama", movie.getGenre());
+        assertEquals("Casablanca", anothermovie.getTitle());
     }
 
     @Test
@@ -169,5 +157,56 @@ class MovieCollectionTest {
         //Assert
         assertFalse(deleted);
         assertEquals(2, collection.getNumberOfMovies());
+    }
+    @Test
+    void movieNeverWatchedAreIncluded() {
+        //Arrange
+        LocalDate limit = LocalDate.of(2026,11,3);
+
+        //Act
+        ArrayList<Movie> result = collection.getMoviesNotWatchedSince(limit);
+
+        //Assert
+        assertEquals(3, result.size());
+        assertTrue(result.containsAll(collection.getMovies()));
+    }
+    @Test
+    void onlyMoviesWatchedBeforeLimitIncluded() {
+        //Arrange
+        Movie godfather = collection.searchMovies("The Godfather").get(0);
+        Movie casablanca = collection.searchMovies("Casablanca").get(0);
+        Movie godzilla = collection.searchMovies("Godzilla").get(0);
+
+        LocalDate limit = LocalDate.of(2025,10,1);
+
+        godfather.markAsWatched(limit.minusDays(1));
+        casablanca.markAsWatched(limit);
+        godzilla.markAsWatched((limit.plusDays(1)));
+
+        //Act
+        ArrayList<Movie> result = collection.getMoviesNotWatchedSince(limit);
+
+        //Assert
+        assertEquals(1, result.size());
+        assertTrue(result.contains(godfather));
+        assertFalse(result.contains(casablanca));
+        assertFalse(result.contains(godzilla));
+    }
+
+    @Test
+    void editMovieInvalidInputNoChange() {
+        //Arrange
+        Movie movie = collection.searchMovies("Casablanca").get(0);
+
+        //Act + Assert
+        assertThrows(IllegalArgumentException.class,() -> collection.editMovie(movie, "Test", "test2", 1800, true, 120, "Horror"));
+        //tester med årstallet afvises da en del af opgaven er at før 1888 skal afvises
+
+        assertEquals("Casablanca", movie.getTitle());
+        assertEquals("Michael Curtiz", movie.getDirector());
+        assertEquals(1942, movie.getYearCreated());
+        assertFalse(movie.isInColor());
+        assertEquals(102, movie.getLengthInMinutes());
+        assertEquals("Drama", movie.getGenre());
     }
 }
