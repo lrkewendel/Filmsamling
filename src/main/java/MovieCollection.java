@@ -43,7 +43,16 @@ public class MovieCollection {
             case "årstal" -> Comparator.comparing(Movie::getYearCreated);
             case "farver" -> Comparator.comparing(Movie::isInColor);
             case "længde" -> Comparator.comparing(Movie::getLengthInMinutes);
-            case "genre" -> Comparator.comparing(Movie::getGenre);
+            case "genre" -> (m1, m2) -> {
+                boolean isM1Other = m1.getGenre().equalsIgnoreCase("OTHER") || m1.getGenre().equalsIgnoreCase(Genre.OTHER.name());
+                boolean isM2Other = m2.getGenre().equalsIgnoreCase("OTHER") || m2.getGenre().equalsIgnoreCase(Genre.OTHER.name());
+
+                if (isM1Other && isM2Other) return 0;
+                if (isM1Other) return 1;
+                if (isM2Other) return -1;
+
+                return m1.getGenre().compareTo(m2.getGenre());};
+
             default -> Comparator.comparing(Movie::getTitle);
         };
 
