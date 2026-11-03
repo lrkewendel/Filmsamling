@@ -125,6 +125,23 @@ class MovieCollectionTest {
     }
 
     @Test
+    void editMovieInvalidInputNoChange() {
+        //Arrange
+        Movie movie = collection.searchMovies("Casablanca").get(0);
+
+        //Act + Assert
+        assertThrows(IllegalArgumentException.class,() -> collection.editMovie(movie, "Test", "test2", 1800, true, 120, "Horror"));
+        //tester med årstallet afvises da en del af opgaven er at før 1888 skal afvises
+
+        assertEquals("Casablanca", movie.getTitle());
+        assertEquals("Michael Curtiz", movie.getDirector());
+        assertEquals(1942, movie.getYearCreated());
+        assertFalse(movie.isInColor());
+        assertEquals(102, movie.getLengthInMinutes());
+        assertEquals("Drama", movie.getGenre());
+    }
+
+    @Test
     void deleteMovieRemovesIt() {
         // Arrange
         Movie casablanca = collection.searchMovies("Casablanca").get(0);

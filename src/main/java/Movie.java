@@ -11,14 +11,15 @@ public class Movie {
     private int lengthInMinutes;
     private String genre;
     private LocalDate lastWatched;
+    private static final int FIRST_MOVIE_YEAR = 1888;
 
     public Movie(String title, String director, int yearCreated, boolean inColor, int lengthInMinutes, String genre) {
-        this.title = title;
-        this.director = director;
-        this.yearCreated = yearCreated;
-        this.inColor = inColor;
-        this.lengthInMinutes = lengthInMinutes;
-        this.genre = genre;
+        setTitle(title);
+        setDirector(director);
+        setYearCreated(yearCreated);
+        setInColor(inColor);
+        setLengthInMinutes(lengthInMinutes);
+        setGenre(genre);
     }
 
     public boolean isInColor() {
@@ -30,6 +31,9 @@ public class Movie {
     }
 
     public void setTitle(String title) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("Titlen må ikke være tom.");
+        }
         this.title = title;
     }
 
@@ -38,6 +42,9 @@ public class Movie {
     }
 
     public void setDirector(String director) {
+        if (director == null || director.isBlank()) {
+            throw new IllegalArgumentException("Du skal skrive en instruktør.");
+        }
         this.director = director;
     }
 
@@ -46,6 +53,11 @@ public class Movie {
     }
 
     public void setYearCreated(int yearCreated) {
+        int latestYear = LocalDate.now().getYear() + 1;
+
+        if (yearCreated < FIRST_MOVIE_YEAR || yearCreated > latestYear) {
+            throw new IllegalArgumentException("årstallet skal være mellem " + FIRST_MOVIE_YEAR + " og " + latestYear);
+        }
         this.yearCreated = yearCreated;
     }
 
@@ -58,12 +70,18 @@ public class Movie {
     }
 
     public void setLengthInMinutes(int lengthInMinutes) {
+        if (lengthInMinutes < 1) {
+            throw new IllegalArgumentException("Filmen skal være mindst 1 minut lang.");
+        }
         this.lengthInMinutes = lengthInMinutes;
     }
 
     public String getGenre() {return genre;}
 
     public void setGenre(String genre) {
+        if (genre == null || genre.isBlank()) {
+            throw new IllegalArgumentException("Genren må ikke være tom.");
+        }
         this.genre = genre;
     }
 
@@ -76,6 +94,9 @@ public class Movie {
     }
 
     public void markAsWatched(LocalDate date) {
+        if (date.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Datoen må ikke ligge i fremtiden.");
+        }
         lastWatched = date;
     }
 
