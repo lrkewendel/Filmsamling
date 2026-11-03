@@ -31,7 +31,6 @@ public class UserInterface {
     final String BLACK = "\u001B[30m";
     final String RESET = "\u001B[0m";
     final String BLACK_BG = "\u001B[40m";
-    final String UNDERLINE = "\u001B[4m";
 
     private void welcome() {
         System.out.println("VELKOMMEN TIL \n");
