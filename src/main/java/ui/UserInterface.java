@@ -1,3 +1,5 @@
+package ui;
+
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeParseException;
@@ -7,6 +9,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import domainmodel.Movie;
+import domainmodel.Controller;
+import domainmodel.Genre;
 
 
 public class UserInterface {
@@ -320,7 +325,7 @@ public class UserInterface {
         System.out.println(BOLD + "\n\n" + " ".repeat(16) + "⭑ SOTÈR DIN FILMSAMLING ⭑" + RESET);
         System.out.println(GRAY + "━".repeat(58) + "\n" + RESET);
         System.out.println("Sorter din filmsamling efter:\n" +
-                "| Titel | Instruktør | Udgivelsesår | Farver | Længde | Genre |");
+                "| Titel | Instruktør | Udgivelsesår | Farver | Længde | domainmodel.Genre |");
 
         String sortMovieInput = scanner.nextLine().toLowerCase();
         String sortingChoice = "";
@@ -478,7 +483,7 @@ public class UserInterface {
         }
 
         Genre movieGenre = Genre.valueOf(movieToEdit.getGenre().toUpperCase());
-        System.out.print("\n\n" + ITALIC + "Genre: " + movieGenre.getDanishName() + RESET + "\n");
+        System.out.print("\n\n" + ITALIC + "domainmodel.Genre: " + movieGenre.getDanishName() + RESET + "\n");
 
 
         String newGenre = movieToEdit.getGenre();
@@ -632,7 +637,7 @@ public class UserInterface {
 
         System.out.print("OM");
         System.out.println("\n" + ITALIC + "Instruktør: " + capitalizedDirector + RESET);
-        System.out.println(ITALIC + "Genre: " + capitalizeGenre + RESET);
+        System.out.println(ITALIC + "domainmodel.Genre: " + capitalizeGenre + RESET);
         System.out.println(ITALIC + "Længde i minutter: " + movie.getLengthInMinutes() + RESET);
         System.out.println(ITALIC + "Filmen er i " + colorText + RESET);
         System.out.println();

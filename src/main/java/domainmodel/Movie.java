@@ -1,6 +1,7 @@
+package domainmodel;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.time.format.DateTimeFormatter;
 
 public class Movie {
 

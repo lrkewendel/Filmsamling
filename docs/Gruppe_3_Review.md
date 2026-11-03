@@ -60,8 +60,8 @@ Comparator-klasserne har deres eget afsnit længere nede.
 
 ### Konstruktivt
 * ~~I editMovie(), kan man tilføje forkerte værdier, såsom årstal: 0 eller lændge: 0. Hvorfor det?~~
-* ~~Hvorfor bruger i ikke Controller metoder?~~
+* ~~Hvorfor bruger i ikke domainmodel.Controller metoder?~~
 * ~~Hvad gør notSeenRecently() i UI?~~
 * ~~Hvorfor har i ikke lavet en metode for sig til at validere selection? DNRY.~~
 * ~~Hvorfor har i valgt at lave Enum til genre?~~
-* ~~Controller har importeret packages som ikke bliver brugt. Hvorfor det?~~
+* ~~domainmodel.Controller har importeret packages som ikke bliver brugt. Hvorfor det?~~

@@ -1,3 +1,5 @@
+package domainmodel;
+
 public enum Genre {
     ACTION("Action"),
     ANIMATION("Animation"),
