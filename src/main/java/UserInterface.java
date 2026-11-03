@@ -485,7 +485,7 @@ public class UserInterface {
         }
 
         // NYT UDGIVELSESÅR:
-        System.out.print(ITALIC + "Udgivelsesår: " + movieToEdit.getYearCreated() + RESET + "\n");
+        System.out.println(ITALIC + "Udgivelsesår: " + movieToEdit.getYearCreated() + RESET);
 
         LocalDate today = LocalDate.now();
         int nextYear = today.plusYears(1).getYear();
@@ -559,7 +559,7 @@ public class UserInterface {
 
 
         // NY LÆNGDE I MINUTTER:
-        System.out.print(ITALIC + "Længde i minutter: " + movieToEdit.getLengthInMinutes() + RESET + "\n");
+        System.out.println(ITALIC + "Længde i minutter: " + movieToEdit.getLengthInMinutes() + RESET);
 
         String lengthInput;
         Integer editLengthInMinutes;
@@ -594,12 +594,14 @@ public class UserInterface {
         // NY GENRE:
         System.out.print("\nGenreoversigt: " + "\n|");
 
-        for (
-                Genre type : Genre.values()) {
+        for (Genre type : Genre.values()) {
             System.out.print(" " + ITALIC + type.getDanishName() + RESET + " |");
+
         }
 
-        System.out.print("\n\n" + ITALIC + "Genre: " + movieToEdit.getGenre() + RESET + "\n");
+        Genre movieGenre = Genre.valueOf(movieToEdit.getGenre().toUpperCase());
+        System.out.print("\n\n" + ITALIC + "Genre: " + movieGenre.getDanishName() + RESET + "\n");
+
 
         Genre newGenre = null;
 

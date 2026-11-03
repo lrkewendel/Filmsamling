@@ -1,4 +1,18 @@
-public enum Genre {ACTION("Action"), COMEDY("Komedie"), DRAMA("Drama"), THRILLER("Thriller"), HORROR("Gyser"), ROMANCE("Romantik"), CRIME("Krimi"), SCI_FI("Science Fiction"), FANTASY("Fantasi"), ANIMATION("Animation"), DOCUMENTARY("Dokumentar"), FAMILY("Familiefilm"), OTHER("Andet");
+public enum Genre {
+    ACTION("Action"),
+    ANIMATION("Animation"),
+    DOCUMENTARY("Dokumentar"),
+    DRAMA("Drama"),
+    FAMILY("Familiefilm"),
+    FANTASY("Fantasi"),
+    HORROR("Gyser"),
+    COMEDY("Komedie"),
+    CRIME("Krimi"),
+    ROMANCE("Romantik"),
+    SCI_FI("Science Fiction"),
+    THRILLER("Thriller"),
+    OTHER("Andet");
+
 
     private String danishName;
 
