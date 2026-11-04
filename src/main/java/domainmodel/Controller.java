@@ -25,11 +25,9 @@ public class Controller {
 
         changed = true;
     }
-
     public ArrayList<Movie> getMovies() {
         return movieCollection.getMovies();
     }
-
     public ArrayList<Movie> searchMovies(String searchText) {
         return movieCollection.searchMovies(searchText);
     }
@@ -85,6 +83,9 @@ public class Controller {
     }
     public ArrayList<Movie> getMoviesSortedBy(SortField field) {
         return movieCollection.getMoviesSorted(comparatorFor(field));
+    }
+    public ArrayList<Movie> getMoviesSortedByTitle() {
+        return movieCollection.getMoviesSortedByTitle();
     }
     private Comparator<Movie> comparatorFor(SortField field) {
         return switch (field) {

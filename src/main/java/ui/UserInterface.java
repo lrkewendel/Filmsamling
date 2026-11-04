@@ -247,7 +247,7 @@ public class UserInterface {
         System.out.println(BOLD + "\n\n" + " ".repeat(19) + "⭑ DIN FILMSAMLING ⭑" + RESET);
         System.out.println(GRAY + "━".repeat(58) + RESET);
 
-        ArrayList<Movie> movies = controller.getMoviesSortedBy(SortField.TITLE);
+        ArrayList<Movie> movies = controller.getMoviesSortedByTitle();
 
         if (movies.isEmpty()) {
             System.out.println(ITALIC + "Du har ingen film i din samling endnu :(" + RESET);
