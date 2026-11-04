@@ -9,3 +9,6 @@ Et CRUD-program til en filmsamling – 1. semester, datamatiker, EK.
 | Frederik | FredeVNN | 
 | Ajla | mocina1225 |
 | Lærke | lrkewendel |
+
+Klassen "main" kører programmet.
+Programmet kører JDK: "25".
