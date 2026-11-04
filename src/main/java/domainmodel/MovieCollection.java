@@ -39,6 +39,7 @@ public class MovieCollection {
         return matches;
     }
 
+    //cases følger den standard comparator på nær case "genre" - den bruger lambda funktion, til at sammenligne genre så den placerer "other" nederst.
     public void sortMovies(String sortingChoice){
 
         Comparator<Movie> c = switch (sortingChoice.toLowerCase()){
