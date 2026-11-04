@@ -44,7 +44,7 @@ public class MovieCollection {
         Comparator<Movie> c = switch (sortingChoice.toLowerCase()){
             case "titel" -> Comparator.comparing(Movie::getTitle);
             case "instruktør" -> Comparator.comparing(Movie::getDirector);
-            case "årstal" -> Comparator.comparing(Movie::getYearCreated);
+            case "udgivelsesår" -> Comparator.comparing(Movie::getYearCreated);
             case "farver" -> Comparator.comparing(Movie::isInColor);
             case "længde" -> Comparator.comparing(Movie::getLengthInMinutes);
             case "genre" -> (m1, m2) -> {

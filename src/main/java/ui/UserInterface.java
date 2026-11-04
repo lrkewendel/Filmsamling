@@ -270,7 +270,7 @@ public class UserInterface {
         String sortMovieInput = scanner.nextLine().toLowerCase();
         String sortingChoice = "";
 
-        Pattern pattern = Pattern.compile("(titel|instruktør|årstal|farver|længde|genre)");
+        Pattern pattern = Pattern.compile("(titel|instruktør|udgivelsesår|farver|længde|genre)");
         Matcher matcher = pattern.matcher(sortMovieInput);
 
         if (matcher.find()) {
