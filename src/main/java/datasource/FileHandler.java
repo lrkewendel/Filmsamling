@@ -6,12 +6,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FileHandler {
 
     private String fileName;
+    private static final String HEADER = "title;director;yearCreated;inColor;lengthInMinutes;genre;lastWatched";
+    private int skippedLineCount;
 
     public FileHandler (String fileName){
         this.fileName = fileName;
@@ -20,46 +23,87 @@ public class FileHandler {
     public void saveMovies (ArrayList<Movie>movies)
         throws FileNotFoundException, java.io.UnsupportedEncodingException{
         PrintStream output = new PrintStream(new File(fileName), "UTF-8");
-
+        output.println(HEADER);
         for(Movie movie : movies){
-            output.println(movie.toCsvLine());
+            output.println(toCsvLine(movie));
         }
         output.close();
+    }
+    private String toCsvLine(Movie movie) {
+        String lastWatched = "";
+
+        if (movie.hasBeenWatched()) {
+            lastWatched = movie.getLastWatched().toString();
+        }
+        return movie.getTitle() + ";"
+                + movie.getDirector() + ";"
+                + movie.getYearCreated() + ";"
+                + movie.isInColor() + ";"
+                + movie.getLengthInMinutes() + ";"
+                + movie.getGenre() + ";"
+                + lastWatched;
+
+    }
+    public int getSkippedLineCount() {
+        return skippedLineCount;
     }
 
     public ArrayList<Movie>loadMovies()
         throws FileNotFoundException{
 
         ArrayList<Movie> movies = new ArrayList<>();
+        skippedLineCount = 0;
 
         Scanner fileScanner = new Scanner(new File(fileName), "UTF-8");
+        boolean firstLine = true;
 
-        while (fileScanner.hasNextLine()){
+        while (fileScanner.hasNextLine()) {
             String line = fileScanner.nextLine();
 
-            String[] fields = line.split(";", -1);
+            if(firstLine && line.equals(HEADER)) {
+                firstLine = false;
+                continue;
+            }
+            firstLine = false;
+            Movie movie = parseMovie(line);
 
+            if (movie != null) {
+                movies.add(movie);
+            }
+            else {
+                skippedLineCount++;
+            }
+        }
+        fileScanner.close();
+        return movies;
+    }
+    private Movie parseMovie(String line) {
+        String[] fields = line.split(";", -1);
+
+        if (fields.length != 7) {
+            return null;
+        }
+
+        try {
             String title = fields[0];
             String director = fields[1];
             int yearCreated = Integer.parseInt(fields[2]);
             boolean inColor = Boolean.parseBoolean(fields[3]);
             int lengthInMinutes = Integer.parseInt(fields[4]);
             String genre = fields[5];
-            LocalDate lastWatched = null;
-
-            if(!fields[6].isEmpty() && !fields[6].equals("null")){
-                lastWatched = LocalDate.parse(fields[6]);
-            }
 
             Movie movie = new Movie(title, director, yearCreated, inColor, lengthInMinutes, genre);
 
-            if(lastWatched != null){
-                movie.markAsWatched(lastWatched);
+            if (!fields[6].isEmpty()) {
+                movie.markAsWatched(LocalDate.parse(fields[6]));
             }
-            movies.add(movie);
+            return movie;
         }
-        fileScanner.close();
-
-        return movies;
+        catch (IllegalArgumentException e) {
+            return null;
+        }
+        catch (DateTimeParseException e) {
+            return null;
+        }
     }
 }

@@ -104,14 +104,4 @@ public class Movie {
     public long getDaysSinceWatched(LocalDate today) {
         return ChronoUnit.DAYS.between(lastWatched, today);
     }
-
-    public String toCsvLine(){
-        return    getTitle() + ";"
-                + getDirector() + ";"
-                + getYearCreated() + ";"
-                + isInColor() + ";"
-                + getLengthInMinutes() + ";"
-                + getGenre() + ";"
-                + lastWatched;
-    }
 }

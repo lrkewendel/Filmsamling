@@ -92,7 +92,14 @@ public class UserInterface {
         welcome();
 
         try {
-            controller.loadMovies();
+            int count = controller.loadMovies();
+            System.out.println(count + " film er indlæst ");
+
+            int skipped = controller.getSkippedLineCount();
+
+            if (skipped > 0) {
+                System.out.println(skipped + " linjer i filen kunne ikke læses og er sprunget over");
+            }
         } catch (FileNotFoundException e) {
             System.out.println("Du har endnu ingen film i din samling.\nStart din filmsamling ved at tilføje din første film!\n");
         }
@@ -119,14 +126,20 @@ public class UserInterface {
         }
 
         try {
-            controller.saveMovies();
-            System.out.println("Alle dine film er blevet gemt. Vi ses næste gang!");
+            boolean saved = controller.saveMovies();
+
+            if (saved) {
+                System.out.println("Alle dine film er blevet gemt. Vi ses næste gang!");
+            }
+            else {
+                System.out.println(" Ingen ændringer da der ikke er noget at gemme!");
+            }
+
         } catch (FileNotFoundException e) {
             System.out.println("Hovsa! Noget gik galt, og din filmsamling blev ikke gemt :(");
         } catch (java.io.UnsupportedEncodingException e) {
             System.out.println("Hovsa! Din PC understøtter ikke UTF-8 formatering...");
         }
-
         scanner.close();
     }
 
@@ -382,7 +395,7 @@ public class UserInterface {
         // NY LÆNGDE I MINUTTER:
         System.out.println(ITALIC + "Længde i minutter: " + movieToEdit.getLengthInMinutes() + RESET);
 
-        int newLenghtInMinutes = readInt("Ny længde i minutter: " + movieToEdit.getLengthInMinutes());
+        int newLenghtInMinutes = readInt("Ny længde i minutter: ", movieToEdit.getLengthInMinutes());
 
         // NY GENRE:
         System.out.print("\nGenreoversigt: " + "\n|");

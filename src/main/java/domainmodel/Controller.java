@@ -9,6 +9,7 @@ public class Controller {
 
     private MovieCollection movieCollection;
     private FileHandler fileHandler;
+    private boolean changed;
 
     public Controller() {
 
@@ -19,6 +20,8 @@ public class Controller {
     public void addMovie(String title, String director, int yearCreated, boolean inColor,
                          int lengthInMinutes, String genre) {
         movieCollection.addMovie(title, director, yearCreated, inColor, lengthInMinutes, genre);
+
+        changed = true;
     }
 
     public ArrayList<Movie> getMovies() {
@@ -31,15 +34,25 @@ public class Controller {
 
     public boolean editMovie(Movie movie, String title, String director, int yearCreated,
                              boolean inColor, int lengthInMinutes, String genre) {
-        return movieCollection.editMovie(movie, title, director, yearCreated, inColor, lengthInMinutes, genre);
+        boolean edited = movieCollection.editMovie(movie, title, director, yearCreated, inColor, lengthInMinutes, genre);
+        if (edited) {
+            changed = true;
+        }
+        return edited;
     }
 
     public boolean deleteMovie(Movie movie) {
-        return movieCollection.deleteMovie(movie);
+        boolean deleted = movieCollection.deleteMovie(movie);
+
+        if (deleted) {
+            changed = true;
+        }
+        return deleted;
     }
 
     public void markAsWatched(Movie movie, LocalDate date) {
         movie.markAsWatched(date);
+        changed = true;
     }
 
     public ArrayList<Movie> getMoviesNotWatchedForDays(int days) {
@@ -47,16 +60,26 @@ public class Controller {
         return movieCollection.getMoviesNotWatchedSince(limit);
     }
 
-    public void saveMovies() throws FileNotFoundException, java.io.UnsupportedEncodingException{
+    public boolean saveMovies() throws FileNotFoundException, java.io.UnsupportedEncodingException{
+        if (!changed) {
+            return false;
+        }
         fileHandler.saveMovies(movieCollection.getMovies());
+        changed = false;
+
+        return true;
     }
 
-    public void loadMovies() throws FileNotFoundException{
+    public int loadMovies() throws FileNotFoundException{
        ArrayList<Movie> movies = fileHandler.loadMovies();
 
        for(Movie movie : movies){
            movieCollection.addMovie(movie);
        }
+       return movies.size();
+    }
+    public int getSkippedLineCount() {
+        return fileHandler.getSkippedLineCount();
     }
 
     public void sortMovies(String sortingChoice) {
