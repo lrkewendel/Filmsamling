@@ -12,3 +12,4 @@ Et CRUD-program til en filmsamling – 1. semester, datamatiker, EK.
 
 Klassen "main" kører programmet.
 Programmet kører JDK: "25".
+Alle US lavet på nær de frivillige udvidelser.
