@@ -1,10 +1,8 @@
 package domainmodel;
 
+import java.sql.Array;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class MovieCollection {
     private ArrayList<Movie> movies;
@@ -39,31 +37,6 @@ public class MovieCollection {
         return matches;
     }
 
-    //cases følger den standard comparator på nær case "genre" - den bruger lambda funktion, til at sammenligne genre så den placerer "other" nederst.
-    public void sortMovies(String sortingChoice){
-
-        Comparator<Movie> c = switch (sortingChoice.toLowerCase()){
-            case "titel" -> Comparator.comparing(Movie::getTitle);
-            case "instruktør" -> Comparator.comparing(Movie::getDirector);
-            case "udgivelsesår" -> Comparator.comparing(Movie::getYearCreated);
-            case "farver" -> Comparator.comparing(Movie::isInColor);
-            case "længde" -> Comparator.comparing(Movie::getLengthInMinutes);
-            case "genre" -> (m1, m2) -> {
-                boolean isM1Other = m1.getGenre().equalsIgnoreCase("OTHER") || m1.getGenre().equalsIgnoreCase(Genre.OTHER.name());
-                boolean isM2Other = m2.getGenre().equalsIgnoreCase("OTHER") || m2.getGenre().equalsIgnoreCase(Genre.OTHER.name());
-
-                if (isM1Other && isM2Other) return 0;
-                if (isM1Other) return 1;
-                if (isM2Other) return -1;
-
-                return m1.getGenre().compareTo(m2.getGenre());};
-
-            default -> Comparator.comparing(Movie::getTitle);
-        };
-
-        this.movies.sort(c);
-    }
-
     public boolean editMovie(Movie movie, String title, String director, int yearCreated,
                              boolean inColor, int lengthInMinutes, String genre) {
 
@@ -95,5 +68,17 @@ public class MovieCollection {
         }
 
         return result;
+    }
+    //Returnerer en sorteret KOPI
+    public ArrayList<Movie> getMoviesSortedByTitle() {
+        ArrayList<Movie> sorted = new ArrayList<>(movies);
+        Collections.sort(sorted);
+        return sorted;
+    }
+
+    public ArrayList<Movie> getMoviesSorted(Comparator<Movie> comparator) {
+        ArrayList<Movie> sorted = new ArrayList<>(movies);
+        sorted.sort(comparator);
+        return sorted;
     }
 }

@@ -3,6 +3,8 @@ package domainmodel;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.Comparator;
+
 import datasource.FileHandler;
 
 public class Controller {
@@ -81,8 +83,16 @@ public class Controller {
     public int getSkippedLineCount() {
         return fileHandler.getSkippedLineCount();
     }
-
-    public void sortMovies(String sortingChoice) {
-        this.movieCollection.sortMovies(sortingChoice);
+    public ArrayList<Movie> getMoviesSortedBy(SortField field) {
+        return movieCollection.getMoviesSorted(comparatorFor(field));
+    }
+    private Comparator<Movie> comparatorFor(SortField field) {
+        return switch (field) {
+            case TITLE -> new TitleComparator();
+            case DIRECTOR -> new DirectorComparator();
+            case YEAR -> new YearComparator();
+            case LENGTH -> new LengthComparator();
+            case GENRE -> new GenreComparator();
+        };
     }
 }

@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import domainmodel.Movie;
 import domainmodel.Controller;
 import domainmodel.Genre;
+import domainmodel.SortField;
 
 
 public class UserInterface {
@@ -246,7 +247,7 @@ public class UserInterface {
         System.out.println(BOLD + "\n\n" + " ".repeat(19) + "⭑ DIN FILMSAMLING ⭑" + RESET);
         System.out.println(GRAY + "━".repeat(58) + RESET);
 
-        ArrayList<Movie> movies = controller.getMovies();
+        ArrayList<Movie> movies = controller.getMoviesSortedBy(SortField.TITLE);
 
         if (movies.isEmpty()) {
             System.out.println(ITALIC + "Du har ingen film i din samling endnu :(" + RESET);
@@ -261,29 +262,46 @@ public class UserInterface {
 
     // 4. SORTÈR FILM:
     private void sortMovies() {
-
         System.out.println(BOLD + "\n\n" + " ".repeat(16) + "⭑ SOTÈR DIN FILMSAMLING ⭑" + RESET);
         System.out.println(GRAY + "━".repeat(58) + "\n" + RESET);
         System.out.println("Sorter din filmsamling efter:\n" +
-                "| Titel | Instruktør | Udgivelsesår | Farver | Længde | Genre |");
+                "| Titel | Instruktør | Udgivelsesår | Længde | Genre |");
+        SortField[] fields = SortField.values();
+        System.out.println("Sorter efter:");
 
-        String sortMovieInput = scanner.nextLine().toLowerCase();
-        String sortingChoice = "";
-
-        Pattern pattern = Pattern.compile("(titel|instruktør|udgivelsesår|farver|længde|genre)");
-        Matcher matcher = pattern.matcher(sortMovieInput);
-
-        if (matcher.find()) {
-            sortingChoice = matcher.group(1);
+        for (int i = 0; i < fields.length; i++) {
+            String danishName = switch (fields[i]) {
+                case TITLE -> "Titel";
+                case DIRECTOR -> "Instruktør";
+                case YEAR -> "Udgivelsesår";
+                case LENGTH -> "Længde";
+                case GENRE -> "Genre";
+            };
+            System.out.println((i + 1) + " " + danishName);
         }
 
-        if (!sortingChoice.isEmpty()) {
-            controller.sortMovies(sortingChoice);
-            System.out.println("\nFilmsamlingen er sorteret efter: " + ITALIC + capitalizeFirstLetter(sortingChoice) + RESET);
-            showAllMovies();
-        } else {
-            System.out.println("\nKunne ikke sortere din filmsamling.");
+        int choice = readInt("Vælg nummer: ");
+
+        while (choice < 1 || choice > fields.length) {
+            System.out.println("Hovsa! Vælg et nummer mellem 1 og " + fields.length);
+
+            choice = readInt("Vælg nummer: ");
         }
+        SortField selectedField = fields[choice - 1];
+        ArrayList<Movie> movies = controller.getMoviesSortedBy(selectedField);
+
+        if (movies.isEmpty()) {
+            System.out.println(ITALIC + "Du har ingen film i din samling endnu : (" + RESET);
+            return;
+        }
+        System.out.println("\nDin sorterede filmsamling:\n");
+
+        for (Movie movie: movies) {
+            printMovie(movie);
+        }
+        System.out.println("");
+
+
     }
 
     // 5. SØG EFTER FILM:
