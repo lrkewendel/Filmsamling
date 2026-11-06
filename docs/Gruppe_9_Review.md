@@ -1,4 +1,4 @@
-# Code review – Filmsamling
+# Code review – af Gruppe 9's Filmsamling
 
 
 ### Sådan læses skemaet
